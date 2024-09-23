@@ -55,9 +55,9 @@ class AppTheme {
     fontFamily: 'Satoshi',
     sliderTheme: SliderThemeData(
       overlayShape: SliderComponentShape.noOverlay,
-      activeTrackColor: Color(0xffB7B7B7),
+      activeTrackColor: const Color(0xffB7B7B7),
       inactiveTrackColor: Colors.grey.withOpacity(0.3),
-      thumbColor: Color(0xffB7B7B7)
+      thumbColor: const Color(0xffB7B7B7)
       
     ),
     inputDecorationTheme: InputDecorationTheme(   
