@@ -9,7 +9,6 @@ class AppTheme {
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.lightBackground,
     brightness: Brightness.light,
-    fontFamily: 'Satoshi',
     sliderTheme: SliderThemeData(
       overlayShape: SliderComponentShape.noOverlay
     ),
