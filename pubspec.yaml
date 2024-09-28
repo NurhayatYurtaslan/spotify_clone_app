@@ -34,20 +34,14 @@ dependencies:
   #auto route
   auto_route: ^9.2.2
 
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
   #code generation
   build_runner:
   auto_route_generator: ^9.0.0
-  #linting
   flutter_gen_runner:
-
-
-
+  #linting
   flutter_lints: ^4.0.0
 
 flutter:
