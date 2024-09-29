@@ -4,8 +4,8 @@ import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 class BasicAppButton extends StatelessWidget {
   final String buttonText;
   final VoidCallback onPressed;
-  final Color buttonBgColor;
-  final Color buttonTextColor;
+
+  
   final BorderRadius buttonBorderRadius;
   final double? buttonHeight;
   final double? buttonWidth;
@@ -14,8 +14,7 @@ class BasicAppButton extends StatelessWidget {
     super.key,
     required this.buttonText,
     required this.onPressed,
-    required this.buttonBgColor,
-    required this.buttonTextColor,
+    
     this.buttonBorderRadius = const BorderRadius.all(Radius.circular(30)),
     this.buttonHeight,
     this.buttonWidth,
@@ -29,7 +28,6 @@ class BasicAppButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: buttonBgColor,
           shape: RoundedRectangleBorder(
             borderRadius: buttonBorderRadius,
           ),
@@ -37,7 +35,7 @@ class BasicAppButton extends StatelessWidget {
         child: Text(
           buttonText,
           style: TextStyle(
-            color: buttonTextColor,
+            
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),

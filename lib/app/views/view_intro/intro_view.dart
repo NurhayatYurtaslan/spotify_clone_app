@@ -72,11 +72,10 @@ class IntroView extends StatelessWidget {
                               .add(GetStartedEvent(context));
                         },
                         buttonText: 'Get Started',
-                        buttonBgColor: AppColors.primary,
-                        buttonTextColor: Colors.white,
-                        buttonHeight: context.highValue * 1.2,
+                        
+                        buttonHeight: context.highValue,
                       ),
-                      context.sizedHeightBoxMedium
+                      context.sizedHeightBoxExtraHigh
                     ],
                   ),
                 )

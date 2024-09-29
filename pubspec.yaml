@@ -19,6 +19,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   hydrated_bloc: ^9.1.5
   path_provider: ^2.1.4
+  equatable: ^2.0.5
   #firebase
   firebase_core: ^3.5.0
   firebase_auth: ^5.3.0
@@ -35,6 +36,7 @@ dependencies:
   auto_route: ^9.2.2
   #flavor
   flavor: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
