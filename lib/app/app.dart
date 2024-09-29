@@ -19,6 +19,7 @@ Future<void> main() async {
 }
 
 class App extends StatefulWidget {
+  
   const App({super.key});
 
 
@@ -60,17 +61,15 @@ class _AppState extends State<App> {
           final themeData = mode is ChooseModeInitialState
               ? mode.themeData
               : AppTheme.lightTheme;
-          return FlavorBanner(
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: themeData.brightness == Brightness.dark
-                  ? ThemeMode.dark
-                  : ThemeMode.light,
-              routerConfig: _appRouter.config(
-                  navigatorObservers: () => [NavigatorObserver()]),
-            ),
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeData.brightness == Brightness.dark
+                ? ThemeMode.dark
+                : ThemeMode.light,
+            routerConfig: _appRouter.config(
+                navigatorObservers: () => [NavigatorObserver()]),
           );
         },
       ),
