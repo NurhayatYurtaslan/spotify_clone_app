@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotify_clone_app/app/views/view_splash/splash_view.dart';
+import 'package:spotify_clone_app/app/router/app_router.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -10,10 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // AppRouter appRouter = AppRouter();
-    return const MaterialApp(
+    AppRouter appRouter = AppRouter();
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: SplashView(),
+      routerConfig: appRouter.config(),
     );
   }
 }
