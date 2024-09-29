@@ -13,7 +13,9 @@
             "program": "lib/flavors/main_dev.dart",
             "args": [
                 "--flavor",
-                "dev"
+                "dev",
+                "--target",
+                "lib/flavors/main_dev.dart"
             ]
         },
         {
@@ -24,7 +26,10 @@
             "program": "lib/flavors/main_prod.dart",
             "args": [
                 "--flavor",
-                "prod"
+                "prod",
+                "--target",
+                "lib/flavors/main_prod.dart"
+
             ]
         }
     ]
