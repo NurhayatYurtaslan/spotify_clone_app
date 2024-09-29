@@ -33,6 +33,8 @@ dependencies:
   flutter_gen: ^5.7.0
   #auto route
   auto_route: ^9.2.2
+  #flavor
+  flavor: ^2.0.0
 
 dev_dependencies:
   flutter_test:
