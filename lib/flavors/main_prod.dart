@@ -9,7 +9,6 @@ Future<void> main(List<String> args) async {
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
   Flavor.create(
-    //TODO: Add your own flavor values
     Environment.production,
     name: "Production",
     color: Colors.blue,

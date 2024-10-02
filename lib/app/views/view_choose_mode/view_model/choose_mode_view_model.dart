@@ -6,7 +6,7 @@ import 'package:spotify_clone_app/core/theme/app_theme.dart';
 class ChooseModeViewModel extends Bloc<ChooseModeEvent, ChooseModeState> {
   
   ChooseModeViewModel() : super(ChooseModeInitialState(AppTheme.lightTheme)) {
-    print('ChooseModeViewModel created'); // Add this line
+    // print('ChooseModeViewModel created'); 
     on<ChooseModeInitialEvent>(_onChangeTheme);
     on<ChooseModeDarkEvent>(_onChooseDark);
     on<ChooseModeLightEvent>(_onChooseLight);
@@ -21,13 +21,13 @@ class ChooseModeViewModel extends Bloc<ChooseModeEvent, ChooseModeState> {
   void _onChooseDark(ChooseModeDarkEvent event, Emitter<ChooseModeState> emit) {
     // Emit dark theme state
     emit(ChooseModeChangedState(AppTheme.darkTheme));
-    print('dark theme');
+    // print('dark theme');
   }
 
   void _onChooseLight(
       ChooseModeLightEvent event, Emitter<ChooseModeState> emit) {
     // Emit light theme state
     emit(ChooseModeChangedState(AppTheme.lightTheme));
-    print('light theme');
+    // print('light theme');
   }
 }
