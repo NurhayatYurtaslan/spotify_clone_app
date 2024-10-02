@@ -1,46 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 
 class BasicAppButton extends StatelessWidget {
-  final String buttonText;
   final VoidCallback onPressed;
-
-  
-  final BorderRadius buttonBorderRadius;
-  final double? buttonHeight;
-  final double? buttonWidth;
-
+  final String title;
+  final double ? height;
   const BasicAppButton({
-    super.key,
-    required this.buttonText,
     required this.onPressed,
-    
-    this.buttonBorderRadius = const BorderRadius.all(Radius.circular(30)),
-    this.buttonHeight,
-    this.buttonWidth,
+    required this.title,
+    this.height,
+    super.key
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: buttonHeight ?? context.highValue / 1.5,
-      width: buttonWidth ?? context.width,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: buttonBorderRadius,
-          ),
-        ),
-        child: Text(
-          buttonText,
-          style: TextStyle(
-            
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size.fromHeight(height ?? 80),
       ),
+      child: Text(
+        title
+      )
     );
   }
 }

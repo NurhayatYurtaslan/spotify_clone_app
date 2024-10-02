@@ -71,9 +71,7 @@ class IntroView extends StatelessWidget {
                               .read<IntroViewModel>()
                               .add(GetStartedEvent(context));
                         },
-                        buttonText: 'Get Started',
-                        
-                        buttonHeight: context.highValue,
+                        title: 'Get Started',
                       ),
                       context.sizedHeightBoxExtraHigh
                     ],

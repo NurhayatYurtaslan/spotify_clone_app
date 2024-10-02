@@ -11,6 +11,6 @@ class IntroViewModel extends Bloc<IntroEvent, IntroState> {
     on<GetStartedEvent>(_getStarted);
   }
   FutureOr<void> _getStarted(GetStartedEvent event, Emitter<IntroState> emit) {
-    event.context.router.replace(ChooseModeViewRoute());
+    event.context.router.replace(const ChooseModeViewRoute());
   }
 }
