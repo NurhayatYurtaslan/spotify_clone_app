@@ -8,7 +8,11 @@ class ChooseModeInitialEvent extends ChooseModeEvent {
   ChooseModeInitialEvent(this.themeData);
 }
 
-
 class ChooseModeDarkEvent extends ChooseModeEvent {}
 
 class ChooseModeLightEvent extends ChooseModeEvent {}
+
+class ContinueEvent extends ChooseModeEvent {
+  BuildContext context;
+  ContinueEvent(this.context);
+}

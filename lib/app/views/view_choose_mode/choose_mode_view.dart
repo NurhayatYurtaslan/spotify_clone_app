@@ -1,7 +1,9 @@
 import 'dart:ui';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:spotify_clone_app/app/router/app_router.dart';
 import 'package:spotify_clone_app/app/views/view_choose_mode/view_model/choose_mode_event.dart';
 import 'package:spotify_clone_app/app/views/view_choose_mode/view_model/choose_mode_state.dart';
 import 'package:spotify_clone_app/app/views/view_choose_mode/view_model/choose_mode_view_model.dart';
@@ -9,6 +11,7 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/widgets/basic_app_button.dart';
 import 'package:spotify_clone_app/gen/assets.gen.dart';
 
+@RoutePage()
 class ChooseModeView extends StatelessWidget {
   const ChooseModeView({super.key});
 
@@ -75,7 +78,7 @@ class ChooseModeView extends StatelessWidget {
                     const SizedBox(height: 50),
                     BasicAppButton(
                       onPressed: () {
-                        // Handle continue button action here
+                        context.router.replace(const SigninOrSignupViewRoute());
                       },
                       title: 'Continue',
                     ),
