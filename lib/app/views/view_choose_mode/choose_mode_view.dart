@@ -6,20 +6,16 @@ import 'package:spotify_clone_app/app/views/view_choose_mode/view_model/choose_m
 import 'package:spotify_clone_app/app/views/view_choose_mode/view_model/choose_mode_state.dart';
 import 'package:spotify_clone_app/app/views/view_choose_mode/view_model/choose_mode_view_model.dart';
 import 'package:spotify_clone_app/core/constants/color_constants.dart';
-import 'package:spotify_clone_app/core/theme/app_theme.dart';
 import 'package:spotify_clone_app/core/widgets/basic_app_button.dart';
 import 'package:spotify_clone_app/gen/assets.gen.dart';
 
 class ChooseModeView extends StatelessWidget {
   const ChooseModeView({super.key});
 
-@override
-Widget build(BuildContext context) {
-  return BlocProvider(
-    create: (context) => ChooseModeViewModel(),
-    child: BlocBuilder<ChooseModeViewModel, ChooseModeState>(
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChooseModeViewModel, ChooseModeState>(
       builder: (context, state) {
-
         return Scaffold(
           backgroundColor: AppColors.lightBackground,
           body: Stack(
@@ -62,7 +58,7 @@ Widget build(BuildContext context) {
                           'Dark Mode',
                           Assets.icons.svg.moon,
                           () {
-                            context.read<ChooseModeViewModel>().add(ChooseModeInitialEvent(AppTheme.darkTheme));
+                            context.read<ChooseModeViewModel>().add(ChooseModeDarkEvent());
                           },
                         ),
                         const SizedBox(width: 40),
@@ -71,7 +67,7 @@ Widget build(BuildContext context) {
                           'Light Mode',
                           Assets.icons.svg.sun,
                           () {
-                            context.read<ChooseModeViewModel>().add(ChooseModeInitialEvent(AppTheme.lightTheme));
+                            context.read<ChooseModeViewModel>().add(ChooseModeLightEvent());
                           },
                         ),
                       ],
@@ -81,7 +77,7 @@ Widget build(BuildContext context) {
                       onPressed: () {
                         // Handle continue button action here
                       },
-                      buttonText: 'Continue',
+                      title: 'Continue',
                     ),
                   ],
                 ),
@@ -90,10 +86,8 @@ Widget build(BuildContext context) {
           ),
         );
       },
-    ),
-  );
-}
-
+    );
+  }
 
   Widget _buildThemeOption(BuildContext context, String label, String assetPath, VoidCallback onTap) {
     return Column(
