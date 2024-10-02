@@ -48,6 +48,63 @@ class IntroViewRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SigninOrSignupView]
+class SigninOrSignupViewRoute extends PageRouteInfo<void> {
+  const SigninOrSignupViewRoute({List<PageRouteInfo>? children})
+      : super(
+          SigninOrSignupViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SigninOrSignupViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SigninOrSignupView();
+    },
+  );
+}
+
+/// generated route for
+/// [SigninView]
+class SigninViewRoute extends PageRouteInfo<void> {
+  const SigninViewRoute({List<PageRouteInfo>? children})
+      : super(
+          SigninViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SigninViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SigninView();
+    },
+  );
+}
+
+/// generated route for
+/// [SignupView]
+class SignupViewRoute extends PageRouteInfo<void> {
+  const SignupViewRoute({List<PageRouteInfo>? children})
+      : super(
+          SignupViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SignupViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SignupView();
+    },
+  );
+}
+
+/// generated route for
 /// [SplashView]
 class SplashViewRoute extends PageRouteInfo<void> {
   const SplashViewRoute({List<PageRouteInfo>? children})
