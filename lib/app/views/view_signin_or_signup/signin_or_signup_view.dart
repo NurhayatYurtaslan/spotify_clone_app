@@ -7,7 +7,7 @@ import 'package:spotify_clone_app/app/views/view_signin_or_signup/view_model/sig
 import 'package:spotify_clone_app/app/views/view_signin_or_signup/view_model/signin_or_signup_view_model.dart';
 import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/helpers/is_dark_mode.dart';
-import 'package:spotify_clone_app/core/widgets/basic_app_bar.dart';
+import 'package:spotify_clone_app/core/widgets/app_bar.dart';
 import 'package:spotify_clone_app/core/widgets/basic_app_button.dart';
 import 'package:spotify_clone_app/gen/assets.gen.dart';
 
@@ -26,9 +26,9 @@ class SigninOrSignupView extends StatelessWidget {
               children: [
                 BasicAppbar(
                   onPressed: () {
-                    context
-                        .read<SigninOrSignupViewModel>()
-                        .add(BackEvent(context));
+                    // Ensure that this is being called
+                    context.read<SigninOrSignupViewModel>().add(BackEvent(
+                        context)); // This should trigger the BackEvent
                   },
                 ),
                 Align(
@@ -73,7 +73,7 @@ class SigninOrSignupView extends StatelessWidget {
                                 flex: 1,
                                 child: BasicAppButton(
                                   onPressed: () {
-                                   context
+                                    context
                                         .read<SigninOrSignupViewModel>()
                                         .add(NavigateToSignupEvent(context));
                                   },
