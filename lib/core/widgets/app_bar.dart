@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify_clone_app/core/helpers/is_dark_mode.dart';
 
@@ -27,8 +26,8 @@ class BasicAppbar extends StatelessWidget implements PreferredSizeWidget {
       leading: hideBack
           ? null
           : IconButton(
-              onPressed: (){
-                context.back(); 
+              onPressed: () {
+                onPressed();
               },
               icon: Container(
                 height: 50,

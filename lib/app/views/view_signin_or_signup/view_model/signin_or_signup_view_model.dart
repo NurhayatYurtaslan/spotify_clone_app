@@ -22,7 +22,10 @@ class SigninOrSignupViewModel
     event.context.router.push(const SignupViewRoute());
   }
 
-  Future<void> _onBack(BackEvent event, Emitter<SigninOrSignupState> emit) async {
-    event.context.back(); // Correct usage for AutoRoute's pop
-  }
+Future<void> _onBack(
+    BackEvent event, Emitter<SigninOrSignupState> emit) async {
+  event.context.router.replace(const ChooseModeViewRoute());
+  
+}
+
 }
