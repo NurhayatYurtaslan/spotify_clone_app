@@ -12,3 +12,5 @@ class SigninFailureState extends SigninState {
 }
 
 class BackState extends SigninState {}
+
+class RegisterState extends SigninState{}

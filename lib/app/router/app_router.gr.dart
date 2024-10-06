@@ -29,6 +29,25 @@ class ChooseModeViewRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [HomeView]
+class HomeViewRoute extends PageRouteInfo<void> {
+  const HomeViewRoute({List<PageRouteInfo>? children})
+      : super(
+          HomeViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HomeView();
+    },
+  );
+}
+
+/// generated route for
 /// [IntroView]
 class IntroViewRoute extends PageRouteInfo<void> {
   const IntroViewRoute({List<PageRouteInfo>? children})
