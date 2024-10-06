@@ -71,11 +71,9 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       emit(SigninSuccessState());
       onSuccessCallback(); // Notify on success
     } catch (e, stack) {
-      print(e);
       FirebaseCrashlytics.instance.recordError(e, stack, fatal: true);
       String errorMessage = 'An error occurred. Please try again.';
       if (e is FirebaseAuthException) {
-        print(e);
         errorMessage = e.code == 'invalid-email'
             ? 'Your email format is incorrect.'
             : 'Email or password incorrect.';
@@ -104,7 +102,7 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       final User? user = await authService.loginWithGoogle(event.context);
       if (user != null) {
         emit(SigninSuccessState());
-        event.context.router.replace(const ChooseModeViewRoute());
+        event.context.router.replace(const HomeViewRoute());
       }
     } on PlatformException catch (e) {
       // Log the error with Crashlytics
@@ -113,7 +111,6 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       onErrorCallback(errorMessage);
     } catch (e, stackTrace) {
       // Log the unexpected error with Crashlytics
-      print(e);
       FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: true);
       String errorMessage = 'An unexpected error occurred. Please try again.';
       emit(SigninFailureState(errorMessage));

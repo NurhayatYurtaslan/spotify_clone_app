@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:spotify_clone_app/app/views/view_choose_mode/choose_mode_view.dart';
+import 'package:spotify_clone_app/app/views/view_home/home_view.dart';
 import 'package:spotify_clone_app/app/views/view_intro/intro_view.dart';
 import 'package:spotify_clone_app/app/views/view_signin/signin_view.dart';
 import 'package:spotify_clone_app/app/views/view_signin_or_signup/signin_or_signup_view.dart';
@@ -20,5 +21,6 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: SigninOrSignupViewRoute.page),
         AutoRoute(page: SigninViewRoute.page),
         AutoRoute(page: SignupViewRoute.page),
+        AutoRoute(page: HomeViewRoute.page),
       ];
 }

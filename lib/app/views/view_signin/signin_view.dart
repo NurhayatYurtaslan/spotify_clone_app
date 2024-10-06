@@ -184,7 +184,8 @@ class _SigninViewState extends State<SigninView> {
                               'Register Now',
                               style: TextStyle(
                                   color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.bold
+                                  ,
                                   fontSize: context.normalValue * 1.2),
                             ),
                           )
