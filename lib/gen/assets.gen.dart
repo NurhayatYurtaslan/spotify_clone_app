@@ -29,8 +29,14 @@ class $AssetsImagesGen {
 class $AssetsIconsSvgGen {
   const $AssetsIconsSvgGen();
 
+  /// File path: assets/icons/svg/apple.svg
+  String get apple => 'assets/icons/svg/apple.svg';
+
   /// File path: assets/icons/svg/bottom_pattern.svg
   String get bottomPattern => 'assets/icons/svg/bottom_pattern.svg';
+
+  /// File path: assets/icons/svg/google.svg
+  String get google => 'assets/icons/svg/google.svg';
 
   /// File path: assets/icons/svg/moon.svg
   String get moon => 'assets/icons/svg/moon.svg';
@@ -42,7 +48,8 @@ class $AssetsIconsSvgGen {
   String get topPattern => 'assets/icons/svg/top_pattern.svg';
 
   /// List of all assets
-  List<String> get values => [bottomPattern, moon, sun, topPattern];
+  List<String> get values =>
+      [apple, bottomPattern, google, moon, sun, topPattern];
 }
 
 class $AssetsImagesPngGen {
