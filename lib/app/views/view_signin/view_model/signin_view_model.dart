@@ -29,6 +29,7 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       await _onSigninWithGoogle(event, emit, onErrorCallback);
     });
     on<BackEvent>(_onBack);
+    on<RegisterEvent>(_onRegister);
   }
 
   // Dispose of controllers to prevent memory leaks
@@ -86,6 +87,11 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
 
   Future<void> _onBack(BackEvent event, Emitter<SigninState> emit) async {
     event.context.router.replace(const SigninOrSignupViewRoute());
+  }
+
+  Future<void> _onRegister(
+      RegisterEvent event, Emitter<SigninState> emit) async {
+    event.context.router.replace(const SignupViewRoute());
   }
 
   Future<void> _onSigninWithGoogle(

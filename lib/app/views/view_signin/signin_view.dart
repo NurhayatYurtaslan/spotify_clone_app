@@ -48,8 +48,8 @@ class _SigninViewState extends State<SigninView> {
           appBar: BasicAppbar(
             title: SvgPicture.asset(
               Assets.images.svg.spotifyLogo,
-              height: 40,
-              width: 40,
+              height: context.mediumValue,
+              width: context.highValue,
             ),
             onPressed: () {
               context.read<SigninViewModel>().add(BackEvent(context));
@@ -57,7 +57,7 @@ class _SigninViewState extends State<SigninView> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(context.mediumValue),
               child: BlocBuilder<SigninViewModel, SigninState>(
                 builder: (context, state) {
                   return Column(
@@ -73,7 +73,6 @@ class _SigninViewState extends State<SigninView> {
                       context.sizedHeightBoxHigh,
                       if (state is SigninLoadingState)
                         const CircularProgressIndicator(), // Loading indicator
-                      const SizedBox(height: 20),
                       BasicAppButton(
                           onPressed: () {
                             context.read<SigninViewModel>().add(
@@ -81,7 +80,33 @@ class _SigninViewState extends State<SigninView> {
                                 );
                           },
                           title: 'Sign In'),
-                      const SizedBox(height: 20),
+                      context.sizedHeightBoxLow,
+                      const Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: AppColors.darkGrey,
+                              thickness: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Or with',
+                              style: TextStyle(
+                                color: AppColors.darkGrey,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: AppColors.darkGrey,
+                              thickness: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      context.sizedHeightBoxLow,
                       // Google ve Apple ile giriş butonları
                       Column(
                         children: [
@@ -95,31 +120,31 @@ class _SigninViewState extends State<SigninView> {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 12.0),
                               decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 255, 255, 255),
+                                color: AppColors.lightBackground,
                                 borderRadius:
                                     BorderRadius.circular(context.mediumValue),
-                                border: Border.all(color: Colors.black),
+                                border: Border.all(color: AppColors.darkGrey),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SvgPicture.asset(
                                     Assets.icons.svg.google, // Google ikonu
-                                    height: 24.0,
-                                    width: 24.0,
+                                    height: context.mediumValue,
+                                    width: context.mediumValue,
                                   ),
-                                  const SizedBox(width: 8.0),
-                                  const Text(
+                                  context.sizedWidthBoxMedium,
+                                  Text(
                                     'Sign in with Google',
                                     style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: context.mediumValue * .8,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          context.sizedHeightBoxMedium,
                           // SignInWithAppleButton(
                           //   style: SignInWithAppleButtonStyle.whiteOutlined,
                           //   height: context.mediumValue * 2,
@@ -137,10 +162,34 @@ class _SigninViewState extends State<SigninView> {
                           //         .toString()); // Burada log fonksiyonunu kullanın
                           //   },
                           // ),
-                          const SizedBox(height: 20),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      context.sizedHeightBoxLow,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Not A Member ?',
+                            style:
+                                TextStyle(fontSize: context.normalValue * 1.2),
+                          ),
+                          context.sizedWidthBoxLow,
+                          InkWell(
+                            onTap: () {
+                              context.read<SigninViewModel>().add(
+                                    RegisterEvent(context),
+                                  );
+                            },
+                            child: Text(
+                              'Register Now',
+                              style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: context.normalValue * 1.2),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   );
                 },
