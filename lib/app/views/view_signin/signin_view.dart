@@ -33,7 +33,6 @@ class _SigninViewState extends State<SigninView> {
           context.router.replace(const ChooseModeViewRoute());
         },
         onErrorCallback: (errorMessage) {
-          print(errorMessage);
           // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -120,7 +119,7 @@ class _SigninViewState extends State<SigninView> {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 12.0),
                               decoration: BoxDecoration(
-                                color: AppColors.lightBackground,
+                                color: AppColors.primary,
                                 borderRadius:
                                     BorderRadius.circular(context.mediumValue),
                                 border: Border.all(color: AppColors.darkGrey),
@@ -137,6 +136,7 @@ class _SigninViewState extends State<SigninView> {
                                   Text(
                                     'Sign in with Google',
                                     style: TextStyle(
+                                      color: AppColors.lightBackground,
                                       fontSize: context.mediumValue * .8,
                                     ),
                                   ),
@@ -184,8 +184,7 @@ class _SigninViewState extends State<SigninView> {
                               'Register Now',
                               style: TextStyle(
                                   color: AppColors.primary,
-                                  fontWeight: FontWeight.bold
-                                  ,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: context.normalValue * 1.2),
                             ),
                           )
