@@ -12,7 +12,20 @@
           "package_name": "com.example"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "862232652299-k19hlbjcg52it81tvc14ebc2bt6cr7c0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example",
+            "certificate_hash": "6257f9c65a1b921b8f336e4ec0908b4d850db8c5"
+          }
+        },
+        {
+          "client_id": "862232652299-hgildb3h971v6n5d4nak221lo43hpp6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBpPP6Q567AeVHdN45DPpno7zkqhyxabmA"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862232652299-hgildb3h971v6n5d4nak221lo43hpp6g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "862232652299-4m72ej4pu2jqoh4cdtmbbsscs5l819va.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.spotifyCloneApp"
+              }
+            }
+          ]
         }
       }
     }
