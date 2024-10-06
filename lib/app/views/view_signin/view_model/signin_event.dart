@@ -11,3 +11,8 @@ class SigninWithGoogleEvent extends SigninEvent {
   final BuildContext context;
   SigninWithGoogleEvent(this.context);
 }
+
+class BackEvent extends SigninEvent {
+  final BuildContext context;
+  BackEvent(this.context);
+}

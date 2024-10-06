@@ -10,3 +10,5 @@ class SigninFailureState extends SigninState {
   final String errorMessage;
   SigninFailureState(this.errorMessage);
 }
+
+class BackState extends SigninState {}
