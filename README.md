@@ -26,6 +26,10 @@ Choose Mode (Light)                | Choose Mode (Dark)         |   Signin or Si
 :-------------------------:|:-------------------------:|:-------------------------: |:-------------------------:
 ![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/Choose_Mode_Light.png?raw=true) |![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/Choose_Mode_Dark.png?raw=true) | ![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/SigninOrSignup_Light.png?raw=true) |![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/SigninOrSignup_Dark.png?raw=true) | ![]
 
+Sign In (Light)                | Sign In (Dark)         |   Sign Up (Light)        |   Sign Up (Dark)    
+:-------------------------:|:-------------------------:|:-------------------------: |:-------------------------:
+![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/Signin_Light.png?raw=true) |![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/Signin_Dark.png?raw=true) | ![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/Register_Light.png?raw=true) |![](https://github.com/NurhayatYurtaslan/spotify_clone_app/blob/main/SS/Register_Dark.png?raw=true) | ![]
+
 ## Design Links:
   - [Dark Theme Design](https://www.figma.com/community/file/1172466818809176172)
   - [Light Theme Design](https://www.figma.com/community/file/1166665330965959412/spotify-redesign-free-ui-kit-light)
@@ -62,16 +66,16 @@ Choose Mode (Light)                | Choose Mode (Dark)         |   Signin or Si
  - ✅ Sign In or Sign Up Page
 - Designing the page where users can either sign in or sign up.
 
- - [ ] Sign Up Page
+ - ✅ Sign Up Page
 - Creating the sign-up page, handling form validation, and user input.
 
- - [ ] Sign In Page
+ - ✅ Sign In Page
 - Building the sign-in page for user authentication.
 
  - [ ] Firebase Setup
 - Setting up Firebase for authentication, Firestore, and storage.
 
- - [ ] Logic of Authentication
+ - ✅ Logic of Authentication
 - Handling user authentication using Firebase.
 
  - [ ] Service Locator
