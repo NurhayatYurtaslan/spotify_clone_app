@@ -94,6 +94,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "862232652299-a59veort03jf0r2hddirb150o13buqql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spotify_clone_app.dev",
+            "certificate_hash": "6257f9c65a1b921b8f336e4ec0908b4d850db8c5"
+          }
+        },
+        {
           "client_id": "862232652299-hgildb3h971v6n5d4nak221lo43hpp6g.apps.googleusercontent.com",
           "client_type": 3
         }
