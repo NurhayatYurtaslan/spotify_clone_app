@@ -30,7 +30,7 @@ class _SigninViewState extends State<SigninView> {
       create: (context) => SigninViewModel(
         onSuccessCallback: () {
           // Successful login callback
-          context.router.replace(const ChooseModeViewRoute());
+          context.router.replace(const HomeViewRoute());
         },
         onErrorCallback: (errorMessage) {
           // Show error message
@@ -42,162 +42,164 @@ class _SigninViewState extends State<SigninView> {
           );
         },
       ),
-      child: Builder(builder: (context) {
-        return Scaffold(
-          appBar: BasicAppbar(
-            title: SvgPicture.asset(
-              Assets.images.svg.spotifyLogo,
-              height: context.mediumValue,
-              width: context.highValue,
+      child: SafeArea(
+        child: Builder(builder: (context) {
+          return Scaffold(
+            appBar: BasicAppbar(
+              title: SvgPicture.asset(
+                Assets.images.svg.spotifyLogo,
+                height: context.mediumValue,
+                width: context.highValue,
+              ),
+              onPressed: () {
+                context.read<SigninViewModel>().add(BackEvent(context));
+              },
             ),
-            onPressed: () {
-              context.read<SigninViewModel>().add(BackEvent(context));
-            },
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(context.mediumValue),
-              child: BlocBuilder<SigninViewModel, SigninState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      Text(
-                        'Sign In',
-                        style: TextStyle(fontSize: context.mediumValue * 1.5),
-                      ),
-                      context.sizedHeightBoxHigh,
-                      _buildEmailField(context),
-                      context.sizedHeightBoxHigh,
-                      _buildPasswordField(context),
-                      context.sizedHeightBoxHigh,
-                      if (state is SigninLoadingState)
-                        const CircularProgressIndicator(), // Loading indicator
-                      BasicAppButton(
-                          onPressed: () {
-                            context.read<SigninViewModel>().add(
-                                  SigninInitialEvent(context),
-                                );
-                          },
-                          title: 'Sign In'),
-                      context.sizedHeightBoxLow,
-                      const Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              color: AppColors.darkGrey,
-                              thickness: 1,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'Or with',
-                              style: TextStyle(
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(context.mediumValue),
+                child: BlocBuilder<SigninViewModel, SigninState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        Text(
+                          'Sign In',
+                          style: TextStyle(fontSize: context.mediumValue * 1.5),
+                        ),
+                        context.sizedHeightBoxHigh,
+                        _buildEmailField(context),
+                        context.sizedHeightBoxHigh,
+                        _buildPasswordField(context),
+                        context.sizedHeightBoxHigh,
+                        if (state is SigninLoadingState)
+                          const CircularProgressIndicator(), // Loading indicator
+                        BasicAppButton(
+                            onPressed: () {
+                              context.read<SigninViewModel>().add(
+                                    SigninInitialEvent(context),
+                                  );
+                            },
+                            title: 'Sign In'),
+                        context.sizedHeightBoxLow,
+                        const Row(
+                          children: [
+                            Expanded(
+                              child: Divider(
                                 color: AppColors.darkGrey,
+                                thickness: 1,
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              color: AppColors.darkGrey,
-                              thickness: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      context.sizedHeightBoxLow,
-                      // Google ve Apple ile giriş butonları
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              context.read<SigninViewModel>().add(
-                                    SigninWithGoogleEvent(context),
-                                  );
-                            },
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 12.0),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius:
-                                    BorderRadius.circular(context.mediumValue),
-                                border: Border.all(color: AppColors.darkGrey),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    Assets.icons.svg.google, // Google ikonu
-                                    height: context.mediumValue,
-                                    width: context.mediumValue,
-                                  ),
-                                  context.sizedWidthBoxMedium,
-                                  Text(
-                                    'Sign in with Google',
-                                    style: TextStyle(
-                                      color: AppColors.lightBackground,
-                                      fontSize: context.mediumValue * .8,
-                                    ),
-                                  ),
-                                ],
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                'Or with',
+                                style: TextStyle(
+                                  color: AppColors.darkGrey,
+                                ),
                               ),
                             ),
-                          ),
-                          context.sizedHeightBoxMedium,
-                          // SignInWithAppleButton(
-                          //   style: SignInWithAppleButtonStyle.whiteOutlined,
-                          //   height: context.mediumValue * 2,
-                          //   borderRadius:
-                          //       BorderRadius.circular(context.mediumValue),
-                          //   onPressed: () async {
-                          //     final credential =
-                          //         await SignInWithApple.getAppleIDCredential(
-                          //       scopes: [
-                          //         AppleIDAuthorizationScopes.email,
-                          //         AppleIDAuthorizationScopes.fullName,
-                          //       ],
-                          //     );
-                          //     log(credential
-                          //         .toString()); // Burada log fonksiyonunu kullanın
-                          //   },
-                          // ),
-                        ],
-                      ),
-                      context.sizedHeightBoxLow,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Not A Member ?',
-                            style:
-                                TextStyle(fontSize: context.normalValue * 1.2),
-                          ),
-                          context.sizedWidthBoxLow,
-                          InkWell(
-                            onTap: () {
-                              context.read<SigninViewModel>().add(
-                                    RegisterEvent(context),
-                                  );
-                            },
-                            child: Text(
-                              'Register Now',
-                              style: TextStyle(
+                            Expanded(
+                              child: Divider(
+                                color: AppColors.darkGrey,
+                                thickness: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        context.sizedHeightBoxLow,
+                        // Google ve Apple ile giriş butonları
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                context.read<SigninViewModel>().add(
+                                      SigninWithGoogleEvent(context),
+                                    );
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12.0),
+                                decoration: BoxDecoration(
                                   color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: context.normalValue * 1.2),
+                                  borderRadius:
+                                      BorderRadius.circular(context.mediumValue),
+                                  border: Border.all(color: AppColors.darkGrey),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      Assets.icons.svg.google, // Google ikonu
+                                      height: context.mediumValue,
+                                      width: context.mediumValue,
+                                    ),
+                                    context.sizedWidthBoxMedium,
+                                    Text(
+                                      'Sign in with Google',
+                                      style: TextStyle(
+                                        color: AppColors.lightBackground,
+                                        fontSize: context.mediumValue * .8,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          )
-                        ],
-                      )
-                    ],
-                  );
-                },
+                            context.sizedHeightBoxMedium,
+                            // SignInWithAppleButton(
+                            //   style: SignInWithAppleButtonStyle.whiteOutlined,
+                            //   height: context.mediumValue * 2,
+                            //   borderRadius:
+                            //       BorderRadius.circular(context.mediumValue),
+                            //   onPressed: () async {
+                            //     final credential =
+                            //         await SignInWithApple.getAppleIDCredential(
+                            //       scopes: [
+                            //         AppleIDAuthorizationScopes.email,
+                            //         AppleIDAuthorizationScopes.fullName,
+                            //       ],
+                            //     );
+                            //     log(credential
+                            //         .toString()); // Burada log fonksiyonunu kullanın
+                            //   },
+                            // ),
+                          ],
+                        ),
+                        context.sizedHeightBoxLow,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Not A Member ?',
+                              style:
+                                  TextStyle(fontSize: context.normalValue * 1.2),
+                            ),
+                            context.sizedWidthBoxLow,
+                            InkWell(
+                              onTap: () {
+                                context.read<SigninViewModel>().add(
+                                      RegisterEvent(context),
+                                    );
+                              },
+                              child: Text(
+                                'Register Now',
+                                style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: context.normalValue * 1.2),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 
