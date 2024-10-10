@@ -8,4 +8,7 @@ class AppColors {
   static const grey = Color(0xffBEBEBE);
   static const darkGrey = Color(0xff343434); 
   static const errorColor = Color.fromARGB(255, 245, 69, 69); 
+  static const loadingColor = Color.fromARGB(255, 151, 95, 30);
+  static const registerColor = Color.fromARGB(255, 136, 62, 255);
+  static const backColor=Color.fromARGB(255, 44, 117, 244);
 }
