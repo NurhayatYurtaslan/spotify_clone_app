@@ -10,7 +10,6 @@ _$UserResponseModelImpl _$$UserResponseModelImplFromJson(
         Map<String, dynamic> json) =>
     _$UserResponseModelImpl(
       fullName: json['fullName'] as String,
-      imageURL: json['imageURL'] as String,
       email: json['email'] as String,
     );
 
@@ -18,6 +17,5 @@ Map<String, dynamic> _$$UserResponseModelImplToJson(
         _$UserResponseModelImpl instance) =>
     <String, dynamic>{
       'fullName': instance.fullName,
-      'imageURL': instance.imageURL,
       'email': instance.email,
     };

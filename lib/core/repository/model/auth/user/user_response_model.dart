@@ -16,7 +16,6 @@ String userResponseModelToJson(UserResponseModel data) =>
 class UserResponseModel with _$UserResponseModel {
   const factory UserResponseModel({
     required String fullName,
-    required String imageURL,
     required String email,
   }) = _UserResponseModel;
 
