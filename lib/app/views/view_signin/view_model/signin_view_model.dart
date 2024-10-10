@@ -1,38 +1,54 @@
-import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spotify_clone_app/app/router/app_router.dart';
 import 'package:spotify_clone_app/app/views/view_signin/view_model/signin_event.dart';
 import 'package:spotify_clone_app/app/views/view_signin/view_model/signin_state.dart';
+import 'package:spotify_clone_app/core/constants/color_constants.dart';
+import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 import 'package:spotify_clone_app/core/repository/model/auth/signin/signin_request_model.dart';
 import 'package:spotify_clone_app/core/repository/service/auth_service.dart';
 
 class SigninViewModel extends Bloc<SigninEvent, SigninState> {
   final AuthService authService = AuthService();
 
-  // Controllers for email and password input
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  SigninViewModel({
-    required Function() onSuccessCallback,
-    required Function(String errorMessage) onErrorCallback,
-  }) : super(SigninInitialState()) {
+  bool _isObscured = true;
+
+  bool get isObscured => _isObscured;
+
+  SigninViewModel() : super(SigninInitialState()) {
     on<SigninInitialEvent>((event, emit) async {
-      await _onSignin(event, emit, onSuccessCallback, onErrorCallback);
+      await _onSignin(event, emit);
     });
+
     on<SigninWithGoogleEvent>((event, emit) async {
-      await _onSigninWithGoogle(event, emit, onErrorCallback);
+      emit(SigninLoadingState());
+      final user = await authService.loginWithGoogle(event.context);
+
+      if (user != null) {
+        emit(SigninSuccessState());
+        _showSnackbar(event.context, 'Signed in with Google successfully.',
+            AppColors.primary);
+        Future.delayed(event.context.durationMedium, () {
+          event.context.router.replace(const HomeViewRoute());
+        });
+      } else {
+        emit(SigninFailureState('Google sign-in failed'));
+        _showSnackbar(
+            event.context, 'Google sign-in failed.', AppColors.errorColor);
+      }
     });
+
     on<BackEvent>(_onBack);
     on<RegisterEvent>(_onRegister);
+    on<TogglePasswordVisibilityEvent>(_onTogglePasswordVisibility);
   }
 
-  // Dispose of controllers to prevent memory leaks
   @override
   Future<void> close() {
     emailController.dispose();
@@ -41,35 +57,36 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
   }
 
   Future<void> _onSignin(
-      SigninInitialEvent event,
-      Emitter<SigninState> emit,
-      Function() onSuccessCallback,
-      Function(String errorMessage) onErrorCallback) async {
+      SigninInitialEvent event, Emitter<SigninState> emit) async {
     FocusManager.instance.primaryFocus?.unfocus();
     emit(SigninLoadingState());
 
-    // Basic validation for email and password
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       emit(SigninFailureState('Please enter both email and password.'));
-      onErrorCallback('Please enter both email and password.');
+      _showSnackbar(event.context, 'Please enter both email and password.',
+          AppColors.errorColor);
       return;
     }
 
-    // Optional email format validation
     const emailPattern = r'^[^@]+@[^@]+\.[^@]+';
     if (!RegExp(emailPattern).hasMatch(emailController.text)) {
       emit(SigninFailureState('Your email format is incorrect.'));
-      onErrorCallback('Your email format is incorrect.');
+      _showSnackbar(event.context, 'Your email format is incorrect.',
+          AppColors.errorColor);
       return;
     }
 
     try {
       await authService.signIn(SignInRequestModel(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim()));
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      ));
 
       emit(SigninSuccessState());
-      onSuccessCallback(); // Notify on success
+      _showSnackbar(event.context, 'Sign in successful.', AppColors.primary);
+          Future.delayed(event.context.durationMedium, () {
+      event.context.router.replace(const HomeViewRoute());
+    });
     } catch (e, stack) {
       FirebaseCrashlytics.instance.recordError(e, stack, fatal: true);
       String errorMessage = 'An error occurred. Please try again.';
@@ -79,42 +96,39 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
             : 'Email or password incorrect.';
       }
       emit(SigninFailureState(errorMessage));
-      onErrorCallback(errorMessage); // Notify on error
+      _showSnackbar(event.context, errorMessage, AppColors.errorColor);
     }
   }
 
-  Future<void> _onBack(BackEvent event, Emitter<SigninState> emit) async {
-    event.context.router.replace(const SigninOrSignupViewRoute());
+  void _onBack(BackEvent event, Emitter<SigninState> emit) {
+    _showSnackbar(
+        event.context, 'Returning to previous screen.', AppColors.backColor);
+    Future.delayed(event.context.durationMedium, () {
+      event.context.router.replace(const ChooseModeViewRoute());
+    });
   }
 
-  Future<void> _onRegister(
-      RegisterEvent event, Emitter<SigninState> emit) async {
-    event.context.router.replace(const SignupViewRoute());
+  void _onRegister(RegisterEvent event, Emitter<SigninState> emit) {
+        _showSnackbar(
+        event.context, 'Navigating to registration screen.', AppColors.registerColor);
+        Future.delayed(event.context.durationMedium, () {
+      event.context.router.replace(const SignupViewRoute());
+    });
   }
 
-  Future<void> _onSigninWithGoogle(
-      SigninWithGoogleEvent event,
-      Emitter<SigninState> emit,
-      Function(String errorMessage) onErrorCallback) async {
-    emit(SigninLoadingState());
+  void _onTogglePasswordVisibility(
+      TogglePasswordVisibilityEvent event, Emitter<SigninState> emit) {
+    _isObscured = !_isObscured;
+    emit(PasswordVisibilityState(_isObscured));
+  }
 
-    try {
-      final User? user = await authService.loginWithGoogle(event.context);
-      if (user != null) {
-        emit(SigninSuccessState());
-        event.context.router.replace(const HomeViewRoute());
-      }
-    } on PlatformException catch (e) {
-      // Log the error with Crashlytics
-      String errorMessage = 'Platform Error: ${e.message}';
-      emit(SigninFailureState(errorMessage));
-      onErrorCallback(errorMessage);
-    } catch (e, stackTrace) {
-      // Log the unexpected error with Crashlytics
-      FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: true);
-      String errorMessage = 'An unexpected error occurred. Please try again.';
-      emit(SigninFailureState(errorMessage));
-      onErrorCallback(errorMessage);
-    }
+  void _showSnackbar(
+      BuildContext context, String message, Color backgroundColor) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text(message),
+          backgroundColor: backgroundColor,
+          duration: context.durationMedium),
+    );
   }
 }

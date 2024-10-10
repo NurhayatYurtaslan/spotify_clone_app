@@ -1,16 +1,31 @@
+// signin_state.dart
 abstract class SigninState {}
 
 class SigninInitialState extends SigninState {}
 
-class SigninLoadingState extends SigninState {}
-
-class SigninSuccessState extends SigninState {}
-
-class SigninFailureState extends SigninState {
-  final String errorMessage;
-  SigninFailureState(this.errorMessage);
+class SigninLoadingState extends SigninState {
+  SigninLoadingState();
 }
 
-class BackState extends SigninState {}
+class SigninSuccessState extends SigninState {
+  SigninSuccessState();
+}
 
-class RegisterState extends SigninState{}
+class SigninFailureState extends SigninState {
+  final String message; // Eklenen message
+  SigninFailureState(this.message);
+}
+
+class BackState extends SigninState {
+  BackState();
+}
+
+class RegisterState extends SigninState {
+  final String message;
+  RegisterState(this.message);
+}
+
+class PasswordVisibilityState extends SigninState {
+  final bool isVisible;
+  PasswordVisibilityState(this.isVisible);
+}
