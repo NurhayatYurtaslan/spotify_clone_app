@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '862232652299',
     projectId: 'musicapp-2fd07',
     storageBucket: 'musicapp-2fd07.appspot.com',
-    androidClientId: '862232652299-k19hlbjcg52it81tvc14ebc2bt6cr7c0.apps.googleusercontent.com',
+    androidClientId: '862232652299-a59veort03jf0r2hddirb150o13buqql.apps.googleusercontent.com',
     iosClientId: '862232652299-4m72ej4pu2jqoh4cdtmbbsscs5l819va.apps.googleusercontent.com',
     iosBundleId: 'com.example.spotifyCloneApp',
   );

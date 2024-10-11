@@ -21,7 +21,6 @@ UserResponseModel _$UserResponseModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserResponseModel {
   String get fullName => throw _privateConstructorUsedError;
-  String get imageURL => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
 
   /// Serializes this UserResponseModel to a JSON map.
@@ -40,7 +39,7 @@ abstract class $UserResponseModelCopyWith<$Res> {
           UserResponseModel value, $Res Function(UserResponseModel) then) =
       _$UserResponseModelCopyWithImpl<$Res, UserResponseModel>;
   @useResult
-  $Res call({String fullName, String imageURL, String email});
+  $Res call({String fullName, String email});
 }
 
 /// @nodoc
@@ -59,17 +58,12 @@ class _$UserResponseModelCopyWithImpl<$Res, $Val extends UserResponseModel>
   @override
   $Res call({
     Object? fullName = null,
-    Object? imageURL = null,
     Object? email = null,
   }) {
     return _then(_value.copyWith(
       fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
-              as String,
-      imageURL: null == imageURL
-          ? _value.imageURL
-          : imageURL // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -87,7 +81,7 @@ abstract class _$$UserResponseModelImplCopyWith<$Res>
       __$$UserResponseModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String fullName, String imageURL, String email});
+  $Res call({String fullName, String email});
 }
 
 /// @nodoc
@@ -104,17 +98,12 @@ class __$$UserResponseModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fullName = null,
-    Object? imageURL = null,
     Object? email = null,
   }) {
     return _then(_$UserResponseModelImpl(
       fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
-              as String,
-      imageURL: null == imageURL
-          ? _value.imageURL
-          : imageURL // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -127,8 +116,7 @@ class __$$UserResponseModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserResponseModelImpl implements _UserResponseModel {
-  const _$UserResponseModelImpl(
-      {required this.fullName, required this.imageURL, required this.email});
+  const _$UserResponseModelImpl({required this.fullName, required this.email});
 
   factory _$UserResponseModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserResponseModelImplFromJson(json);
@@ -136,13 +124,11 @@ class _$UserResponseModelImpl implements _UserResponseModel {
   @override
   final String fullName;
   @override
-  final String imageURL;
-  @override
   final String email;
 
   @override
   String toString() {
-    return 'UserResponseModel(fullName: $fullName, imageURL: $imageURL, email: $email)';
+    return 'UserResponseModel(fullName: $fullName, email: $email)';
   }
 
   @override
@@ -152,14 +138,12 @@ class _$UserResponseModelImpl implements _UserResponseModel {
             other is _$UserResponseModelImpl &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
-            (identical(other.imageURL, imageURL) ||
-                other.imageURL == imageURL) &&
             (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, fullName, imageURL, email);
+  int get hashCode => Object.hash(runtimeType, fullName, email);
 
   /// Create a copy of UserResponseModel
   /// with the given fields replaced by the non-null parameter values.
@@ -181,7 +165,6 @@ class _$UserResponseModelImpl implements _UserResponseModel {
 abstract class _UserResponseModel implements UserResponseModel {
   const factory _UserResponseModel(
       {required final String fullName,
-      required final String imageURL,
       required final String email}) = _$UserResponseModelImpl;
 
   factory _UserResponseModel.fromJson(Map<String, dynamic> json) =
@@ -189,8 +172,6 @@ abstract class _UserResponseModel implements UserResponseModel {
 
   @override
   String get fullName;
-  @override
-  String get imageURL;
   @override
   String get email;
 
