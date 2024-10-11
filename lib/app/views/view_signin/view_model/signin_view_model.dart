@@ -126,7 +126,7 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       BuildContext context, String message, Color backgroundColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-          content: Text(message),
+          content: Center(child: Text(message, style: TextStyle(color: Colors.white, fontWeight:FontWeight.w300, fontSize: 18), )),
           backgroundColor: backgroundColor,
           duration: context.durationMedium),
     );

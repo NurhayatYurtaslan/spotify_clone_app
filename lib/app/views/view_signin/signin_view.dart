@@ -84,7 +84,7 @@ class SigninView extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   'Or with',
-                                  style: TextStyle(color: AppColors.darkGrey),
+                                  
                                 ),
                               ),
                               Expanded(
