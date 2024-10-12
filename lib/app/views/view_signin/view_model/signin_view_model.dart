@@ -10,6 +10,7 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 import 'package:spotify_clone_app/core/repository/model/auth/signin/signin_request_model.dart';
 import 'package:spotify_clone_app/core/repository/service/auth_service.dart';
+import 'package:modern_snackbar/modern_snackbar.dart'; // ModernSnackbar'ı import edin
 
 class SigninViewModel extends Bloc<SigninEvent, SigninState> {
   final AuthService authService = AuthService();
@@ -32,15 +33,26 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
 
       if (user != null) {
         emit(SigninSuccessState());
-        _showSnackbar(event.context, 'Signed in with Google successfully.',
-            AppColors.primary);
+        _showSnackbar(
+          context: event.context,
+          title: 'Success',
+          titleColor: AppColors.primary,
+          icon: Icons.check,
+          message: 'Signed in with Google successfully.',
+          backgroundColor: AppColors.primary,
+        );
         Future.delayed(event.context.durationMedium, () {
           event.context.router.replace(const HomeViewRoute());
         });
       } else {
         emit(SigninFailureState('Google sign-in failed'));
         _showSnackbar(
-            event.context, 'Google sign-in failed.', AppColors.errorColor);
+          context: event.context,
+          title: 'Warning',
+          titleColor: AppColors.errorColor,
+          message: 'Google sign-in failed.',
+          backgroundColor: AppColors.errorColor,
+        );
       }
     });
 
@@ -63,16 +75,28 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
 
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       emit(SigninFailureState('Please enter both email and password.'));
-      _showSnackbar(event.context, 'Please enter both email and password.',
-          AppColors.errorColor);
+      _showSnackbar(
+        context: event.context,
+        icon: Icons.error_outline_sharp,
+        titleColor: AppColors.warningColor,
+        title: 'Warning',
+        message: 'Please enter both email and password.',
+        backgroundColor: AppColors.warningColor,
+      );
       return;
     }
 
     const emailPattern = r'^[^@]+@[^@]+\.[^@]+';
     if (!RegExp(emailPattern).hasMatch(emailController.text)) {
       emit(SigninFailureState('Your email format is incorrect.'));
-      _showSnackbar(event.context, 'Your email format is incorrect.',
-          AppColors.errorColor);
+      _showSnackbar(
+        icon: Icons.email_outlined,
+        title: 'Warning',
+        titleColor: AppColors.warningColor,
+        context: event.context,
+        message: 'Your email format is incorrect.',
+        backgroundColor: AppColors.warningColor,
+      );
       return;
     }
 
@@ -83,10 +107,16 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       ));
 
       emit(SigninSuccessState());
-      _showSnackbar(event.context, 'Sign in successful.', AppColors.primary);
-          Future.delayed(event.context.durationMedium, () {
-      event.context.router.replace(const HomeViewRoute());
-    });
+      _showSnackbar(
+          context: event.context,
+          title: 'Success',
+          titleColor: AppColors.primary,
+          message: 'Sign in successful.',
+          backgroundColor: AppColors.primary,
+          icon: Icons.check);
+      Future.delayed(event.context.durationMedium, () {
+        event.context.router.replace(const HomeViewRoute());
+      });
     } catch (e, stack) {
       FirebaseCrashlytics.instance.recordError(e, stack, fatal: true);
       String errorMessage = 'An error occurred. Please try again.';
@@ -96,22 +126,38 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
             : 'Email or password incorrect.';
       }
       emit(SigninFailureState(errorMessage));
-      _showSnackbar(event.context, errorMessage, AppColors.errorColor);
+      _showSnackbar(
+        context: event.context,
+        title: 'Error',
+        titleColor: AppColors.errorColor,
+        message: errorMessage,
+        backgroundColor: AppColors.errorColor,
+      );
     }
   }
 
   void _onBack(BackEvent event, Emitter<SigninState> emit) {
     _showSnackbar(
-        event.context, 'Returning to previous screen.', AppColors.backColor);
+      context: event.context,
+      title: 'Please Wait',
+      titleColor: AppColors.backColor,
+      message: 'Returning to previous screen.',
+      backgroundColor: AppColors.backColor,
+    );
     Future.delayed(event.context.durationMedium, () {
       event.context.router.replace(const ChooseModeViewRoute());
     });
   }
 
   void _onRegister(RegisterEvent event, Emitter<SigninState> emit) {
-        _showSnackbar(
-        event.context, 'Navigating to registration screen.', AppColors.registerColor);
-        Future.delayed(event.context.durationMedium, () {
+    _showSnackbar(
+      context: event.context,
+      title: 'Please Wait',
+      titleColor: AppColors.registerColor,
+      message: 'Navigating to registration screen.',
+      backgroundColor: AppColors.registerColor,
+    );
+    Future.delayed(event.context.durationMedium, () {
       event.context.router.replace(const SignupViewRoute());
     });
   }
@@ -122,13 +168,20 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
     emit(PasswordVisibilityState(_isObscured));
   }
 
-  void _showSnackbar(
-      BuildContext context, String message, Color backgroundColor) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Center(child: Text(message, style: TextStyle(color: Colors.white, fontWeight:FontWeight.w300, fontSize: 18), )),
-          backgroundColor: backgroundColor,
-          duration: context.durationMedium),
-    );
+  void _showSnackbar({
+    required BuildContext context,
+    required String message,
+    required Color backgroundColor,
+    String title = 'Notification',
+    IconData icon = Icons.info,
+    Color titleColor = Colors.black,
+  }) {
+    ModernSnackbar(
+      titleColor: titleColor,
+      title: title,
+      description: message,
+      backgroundColor: backgroundColor,
+      icon: icon,
+    ).show(context);
   }
 }

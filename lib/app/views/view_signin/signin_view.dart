@@ -33,138 +33,129 @@ class SigninView extends StatelessWidget {
               },
             ),
             body: SingleChildScrollView(
-              child: Padding(
-                  padding: EdgeInsets.all(context.mediumValue),
-                  child: BlocBuilder<SigninViewModel, SigninState>(
-                    builder: (context, state) {
-                      return Column(
+                child: Padding(
+              padding: EdgeInsets.all(context.mediumValue),
+              child: BlocBuilder<SigninViewModel, SigninState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      Text(
+                        'Sign In',
+                        style: TextStyle(fontSize: context.mediumValue * 1.5),
+                      ),
+                      context.sizedHeightBoxHigh,
+                      _buildEmailField(context),
+                      context.sizedHeightBoxHigh,
+                      _buildPasswordField(context),
+                      context.sizedHeightBoxHigh,
+                      if (state is SigninLoadingState)
+                        const CircularProgressIndicator(),
+                      BasicAppButton(
+                        onPressed: () {
+                          context
+                              .read<SigninViewModel>()
+                              .add(SigninInitialEvent(
+                                context,
+                                email: context
+                                    .read<SigninViewModel>()
+                                    .emailController
+                                    .text
+                                    .trim(),
+                                password: context
+                                    .read<SigninViewModel>()
+                                    .passwordController
+                                    .text
+                                    .trim(),
+                              ));
+                        },
+                        title: 'Sign In',
+                      ),
+                      context.sizedHeightBoxLow,
+                      const Row(
                         children: [
-                          Text(
-                            'Sign In',
-                            style:
-                                TextStyle(fontSize: context.mediumValue * 1.5),
+                          Expanded(
+                            child: Divider(
+                              color: AppColors.darkGrey,
+                              thickness: 1,
+                            ),
                           ),
-                          context.sizedHeightBoxHigh,
-                          _buildEmailField(context),
-                          context.sizedHeightBoxHigh,
-                          _buildPasswordField(context),
-                          context.sizedHeightBoxHigh,
-                          if (state is SigninLoadingState)
-                            const CircularProgressIndicator(),
-                          BasicAppButton(
-                            onPressed: () {
-                              context
-                                  .read<SigninViewModel>()
-                                  .add(SigninInitialEvent(
-                                    context,
-                                    email: context
-                                        .read<SigninViewModel>()
-                                        .emailController
-                                        .text
-                                        .trim(),
-                                    password: context
-                                        .read<SigninViewModel>()
-                                        .passwordController
-                                        .text
-                                        .trim(),
-                                  ));
-                            },
-                            title: 'Sign In',
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Or with',
+                            ),
                           ),
-                          context.sizedHeightBoxLow,
-                          const Row(
+                          Expanded(
+                            child: Divider(
+                              color: AppColors.darkGrey,
+                              thickness: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      context.sizedHeightBoxLow,
+                      GestureDetector(
+                        onTap: () {
+                          context
+                              .read<SigninViewModel>()
+                              .add(SigninWithGoogleEvent(context: context));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.circular(context.mediumValue),
+                            border: Border.all(color: AppColors.darkGrey),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Divider(
-                                  color: AppColors.darkGrey,
-                                  thickness: 1,
-                                ),
+                              SvgPicture.asset(
+                                Assets.icons.svg.google,
+                                height: context.mediumValue,
+                                width: context.mediumValue,
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  'Or with',
-                                  
-                                ),
-                              ),
-                              Expanded(
-                                child: Divider(
-                                  color: AppColors.darkGrey,
-                                  thickness: 1,
-                                ),
+                              context.sizedWidthBoxMedium,
+                              const Text(
+                                'Sign in with Google',
+                                style: TextStyle(fontSize: 18),
                               ),
                             ],
                           ),
-                          context.sizedHeightBoxLow,
-                          GestureDetector(
+                        ),
+                      ),
+                      context.sizedHeightBoxLow,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Not A Member?',
+                            style:
+                                TextStyle(fontSize: context.normalValue * 1.2),
+                          ),
+                          context.sizedWidthBoxLow,
+                          InkWell(
                             onTap: () {
                               context
                                   .read<SigninViewModel>()
-                                  .add(SigninWithGoogleEvent(context: context));
+                                  .add(RegisterEvent(context));
                             },
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 12.0),
-                              decoration: BoxDecoration(
+                            child: Text(
+                              'Register Now',
+                              style: TextStyle(
                                 color: AppColors.primary,
-                                borderRadius:
-                                    BorderRadius.circular(context.mediumValue),
-                                border: Border.all(color: AppColors.darkGrey),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    Assets.icons.svg.google,
-                                    height: context.mediumValue,
-                                    width: context.mediumValue,
-                                  ),
-                                  context.sizedWidthBoxMedium,
-                                  Text(
-                                    'Sign in with Google',
-                                    style: TextStyle(
-                                      color: AppColors.lightBackground,
-                                      fontSize: context.mediumValue * .8,
-                                    ),
-                                  ),
-                                ],
+                                fontWeight: FontWeight.bold,
+                                fontSize: context.normalValue * 1.2,
                               ),
                             ),
                           ),
-                          context.sizedHeightBoxLow,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Not A Member?',
-                                style: TextStyle(
-                                    fontSize: context.normalValue * 1.2),
-                              ),
-                              context.sizedWidthBoxLow,
-                              InkWell(
-                                onTap: () {
-                                  context
-                                      .read<SigninViewModel>()
-                                      .add(RegisterEvent(context));
-                                },
-                                child: Text(
-                                  'Register Now',
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: context.normalValue * 1.2,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
-                      );
-                    },
-                  ),
-                )
-              
-            ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            )),
           );
         },
       ),
