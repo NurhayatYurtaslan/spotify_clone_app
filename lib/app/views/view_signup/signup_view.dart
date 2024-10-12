@@ -12,22 +12,15 @@ import 'view_model/signup_state.dart';
 import 'view_model/signup_view_model.dart';
 
 @RoutePage()
-class SignupView extends StatefulWidget {
+class SignupView extends StatelessWidget {
   const SignupView({super.key});
 
-  @override
-  _SignupViewState createState() => _SignupViewState();
-}
-
-class _SignupViewState extends State<SignupView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignupViewModel(),
       child: Builder(
         builder: (context) {
-          final viewModel = context.read<SignupViewModel>();
-
           return Scaffold(
             appBar: BasicAppbar(
               title: SvgPicture.asset(
@@ -43,53 +36,34 @@ class _SignupViewState extends State<SignupView> {
               padding: EdgeInsets.all(context.mediumValue),
               child: Column(
                 children: [
-                  _buildUsernameField(viewModel),
+                  _buildUsernameField(context),
                   context.sizedHeightBoxHigh,
-                  _buildEmailField(viewModel),
+                  _buildEmailField(context),
                   context.sizedHeightBoxHigh,
-                  _buildPasswordField(viewModel),
+                  _buildPasswordField(context),
                   context.sizedHeightBoxHigh,
-                  _buildSignupButton(viewModel, context),
+                  _buildSignupButton(context),
                   context.sizedHeightBoxLow,
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text(
-                      'Have A Account?',
-                      style: TextStyle(fontSize: context.normalValue * 1.2),
-                    ),
-                    context.sizedWidthBoxLow,
-                    InkWell(
-                      onTap: () {
-                        context
-                            .read<SignupViewModel>()
-                            .add(SigninEvent(context));
-                      },
-                      child: Text(
-                        'Signin Now',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: context.normalValue * 1.2,
-                        ),
-                      ),
-                    ),
-                  ])
+                  _buildSigninPrompt(context),
                 ],
               ),
             ),
           );
-        },
+        }
       ),
     );
   }
 
-  TextFormField _buildUsernameField(SignupViewModel viewModel) {
+  TextFormField _buildUsernameField(BuildContext context) {
+    final viewModel = context.read<SignupViewModel>();
     return TextFormField(
       controller: viewModel.usernameController,
       decoration: const InputDecoration(labelText: 'Username'),
     );
   }
 
-  TextFormField _buildEmailField(SignupViewModel viewModel) {
+  TextFormField _buildEmailField(BuildContext context) {
+    final viewModel = context.read<SignupViewModel>();
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       controller: viewModel.emailController,
@@ -97,7 +71,8 @@ class _SignupViewState extends State<SignupView> {
     );
   }
 
-  Widget _buildPasswordField(SignupViewModel viewModel) {
+  Widget _buildPasswordField(BuildContext context) {
+    final viewModel = context.read<SignupViewModel>();
     return BlocBuilder<SignupViewModel, SignupState>(
       builder: (context, state) {
         return Column(
@@ -105,7 +80,7 @@ class _SignupViewState extends State<SignupView> {
           children: [
             TextFormField(
               controller: viewModel.passwordController,
-              focusNode: viewModel.passwordFocusNode, // FocusNode'u ekle
+              focusNode: viewModel.passwordFocusNode,
               obscureText: !viewModel.isPasswordVisible,
               decoration: InputDecoration(
                 labelText: 'Password',
@@ -121,11 +96,9 @@ class _SignupViewState extends State<SignupView> {
                 ),
               ),
               onTap: () {
-                // Şifre gereksinimlerini görünür yap
                 viewModel.togglePasswordRequirementsVisibility();
               },
               onChanged: (value) {
-                // Şifre gereksinimlerini kontrol et
                 viewModel.add(CheckPasswordRequirementsEvent());
               },
             ),
@@ -140,26 +113,11 @@ class _SignupViewState extends State<SignupView> {
   Widget _buildPasswordRequirements(SignupViewModel viewModel) {
     return Column(
       children: [
-        _buildRequirementRow(
-          'At least 8 characters',
-          viewModel.passwordRequirementsMet[0],
-        ),
-        _buildRequirementRow(
-          'One uppercase letter',
-          viewModel.passwordRequirementsMet[1],
-        ),
-        _buildRequirementRow(
-          'One lowercase letter',
-          viewModel.passwordRequirementsMet[2],
-        ),
-        _buildRequirementRow(
-          'One number',
-          viewModel.passwordRequirementsMet[3],
-        ),
-        _buildRequirementRow(
-          'One special character (e.g., @, #, \$, %, &, .)',
-          viewModel.passwordRequirementsMet[4],
-        ),
+        _buildRequirementRow('At least 8 characters', viewModel.passwordRequirementsMet[0]),
+        _buildRequirementRow('One uppercase letter', viewModel.passwordRequirementsMet[1]),
+        _buildRequirementRow('One lowercase letter', viewModel.passwordRequirementsMet[2]),
+        _buildRequirementRow('One number', viewModel.passwordRequirementsMet[3]),
+        _buildRequirementRow('One special character (e.g., @, #, \$, %, &, .)', viewModel.passwordRequirementsMet[4]),
       ],
     );
   }
@@ -177,12 +135,39 @@ class _SignupViewState extends State<SignupView> {
     );
   }
 
-  Widget _buildSignupButton(SignupViewModel viewModel, BuildContext context) {
+  Widget _buildSignupButton(BuildContext context) {
+    final viewModel = context.read<SignupViewModel>();
     return BasicAppButton(
       onPressed: () {
         viewModel.add(SignupInitialEvent(context));
       },
       title: 'Sign Up',
+    );
+  }
+
+  Widget _buildSigninPrompt(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Have An Account?',
+          style: TextStyle(fontSize: context.normalValue * 1.2),
+        ),
+        context.sizedWidthBoxLow,
+        InkWell(
+          onTap: () {
+            context.read<SignupViewModel>().add(SigninEvent(context));
+          },
+          child: Text(
+            'Sign In Now',
+            style: TextStyle(
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: context.normalValue * 1.2,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
