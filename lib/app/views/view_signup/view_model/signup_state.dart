@@ -11,3 +11,7 @@ class SignupFailureState extends SignupState {
 
   SignupFailureState(this.errorMessage);
 }
+class PasswordCriteriaVisibleState extends SignupState {
+  final bool isVisible;
+  PasswordCriteriaVisibleState(this.isVisible);
+}
