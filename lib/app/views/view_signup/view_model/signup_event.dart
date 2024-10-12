@@ -8,12 +8,6 @@ class SignupInitialEvent extends SignupEvent {
   SignupInitialEvent(this.context);
 }
 
-class SignupWithGoogleEvent extends SignupEvent {
-  final BuildContext context;
-
-  SignupWithGoogleEvent(this.context);
-}
-
 class BackToSigninEvent extends SignupEvent {
   final BuildContext context;
 

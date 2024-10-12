@@ -15,15 +15,9 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  SignupViewModel({
-    required Function() onSuccessCallback,
-    required Function(String errorMessage) onErrorCallback,
-  }) : super(SignupInitialState()) {
+  SignupViewModel() : super(SignupInitialState()) {
     on<SignupInitialEvent>((event, emit) async {
-      await _onSignup(event, emit, onSuccessCallback, onErrorCallback);
-    });
-    on<SignupWithGoogleEvent>((event, emit) async {
-      await _onSignupWithGoogle(event, emit, onErrorCallback);
+      await _onSignup(event, emit);
     });
     on<BackToSigninEvent>(_onBackToSignin);
   }
@@ -39,8 +33,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
   Future<void> _onSignup(
     SignupInitialEvent event,
     Emitter<SignupState> emit,
-    Function() onSuccessCallback,
-    Function(String errorMessage) onErrorCallback,
   ) async {
     FocusManager.instance.primaryFocus?.unfocus();
     emit(SignupLoadingState());
@@ -50,7 +42,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
         emailController.text.isEmpty ||
         passwordController.text.isEmpty) {
       emit(SignupFailureState('Please fill all fields.'));
-      onErrorCallback('Please fill all fields.');
       return;
     }
 
@@ -58,8 +49,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
     if (!validatePassword(passwordController.text)) {
       emit(SignupFailureState(
           'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.'));
-      onErrorCallback(
-          'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.');
       return;
     }
 
@@ -72,7 +61,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
       ));
 
       emit(SignupSuccessState());
-      onSuccessCallback(); // Başarılı callback
     } catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
       if (e is FirebaseAuthException) {
@@ -81,7 +69,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
             : 'Failed to register.';
       }
       emit(SignupFailureState(errorMessage));
-      onErrorCallback(errorMessage); // Hata callback
     }
   }
 
@@ -90,25 +77,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
     final passwordRegex = RegExp(
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
     return passwordRegex.hasMatch(password);
-  }
-
-  Future<void> _onSignupWithGoogle(
-    SignupWithGoogleEvent event,
-    Emitter<SignupState> emit,
-    Function(String errorMessage) onErrorCallback,
-  ) async {
-    emit(SignupLoadingState());
-
-    try {
-      final User? user = await authService.loginWithGoogle(event.context);
-      if (user != null) {
-        emit(SignupSuccessState());
-        event.context.router.replace(const HomeViewRoute());
-      }
-    } catch (e) {
-      emit(SignupFailureState('Google sign up failed.'));
-      onErrorCallback('Google sign up failed.');
-    }
   }
 
   Future<void> _onBackToSignin(

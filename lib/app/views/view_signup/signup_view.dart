@@ -30,30 +30,7 @@ class _SignupViewState extends State<SignupView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignupViewModel(
-        onSuccessCallback: () {
-          // Snackbar'ı göster ve ardından Signin sayfasına yönlendir
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Üyeliğiniz tamamlandı!'),
-              duration: const Duration(seconds: 2),
-            ),
-          );
-
-          // 2 saniye bekle ve ardından Signin sayfasına yönlendir
-          Future.delayed(const Duration(seconds: 2), () {
-            context.router.replace(const SigninViewRoute());
-          });
-        },
-        onErrorCallback: (errorMessage) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: AppColors.errorColor,
-              content: Text(errorMessage),
-            ),
-          );
-        },
-      ),
+      create: (context) => SignupViewModel(),
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -72,7 +49,20 @@ class _SignupViewState extends State<SignupView> {
             ),
             body: BlocListener<SignupViewModel, SignupState>(
               listener: (context, state) {
-                if (state is SignupFailureState) {
+                if (state is SignupSuccessState) {
+                  // Başarı durumunda Snackbar göster ve Signin sayfasına yönlendir
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Üyeliğiniz tamamlandı!'),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+
+                  // 2 saniye bekle ve ardından Signin sayfasına yönlendir
+                  Future.delayed(const Duration(seconds: 2), () {
+                    context.router.replace(const SigninViewRoute());
+                  });
+                } else if (state is SignupFailureState) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: AppColors.errorColor,
