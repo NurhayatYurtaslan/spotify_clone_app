@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
+import 'package:spotify_clone_app/core/widgets/app_bar.dart';
 import 'package:spotify_clone_app/core/widgets/basic_app_button.dart';
 import 'package:spotify_clone_app/gen/assets.gen.dart';
 import 'view_model/signup_event.dart';
@@ -27,18 +29,15 @@ class _SignupViewState extends State<SignupView> {
           final viewModel = context.read<SignupViewModel>();
 
           return Scaffold(
-            appBar: AppBar(
+            appBar: BasicAppbar(
               title: SvgPicture.asset(
                 Assets.images.svg.spotifyLogo,
                 height: context.mediumValue,
                 width: context.highValue,
               ),
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+              onPressed: () {
+                context.read<SignupViewModel>().add(BackEvent(context));
+              },
             ),
             body: SingleChildScrollView(
               padding: EdgeInsets.all(context.mediumValue),
@@ -51,6 +50,29 @@ class _SignupViewState extends State<SignupView> {
                   _buildPasswordField(viewModel),
                   context.sizedHeightBoxHigh,
                   _buildSignupButton(viewModel, context),
+                  context.sizedHeightBoxLow,
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text(
+                      'Have A Account?',
+                      style: TextStyle(fontSize: context.normalValue * 1.2),
+                    ),
+                    context.sizedWidthBoxLow,
+                    InkWell(
+                      onTap: () {
+                        context
+                            .read<SignupViewModel>()
+                            .add(SigninEvent(context));
+                      },
+                      child: Text(
+                        'Signin Now',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: context.normalValue * 1.2,
+                        ),
+                      ),
+                    ),
+                  ])
                 ],
               ),
             ),
@@ -69,6 +91,7 @@ class _SignupViewState extends State<SignupView> {
 
   TextFormField _buildEmailField(SignupViewModel viewModel) {
     return TextFormField(
+      keyboardType: TextInputType.emailAddress,
       controller: viewModel.emailController,
       decoration: const InputDecoration(labelText: 'Email'),
     );
@@ -88,7 +111,9 @@ class _SignupViewState extends State<SignupView> {
                 labelText: 'Password',
                 suffixIcon: IconButton(
                   icon: Icon(
-                    viewModel.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    viewModel.isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     viewModel.togglePasswordVisibility();

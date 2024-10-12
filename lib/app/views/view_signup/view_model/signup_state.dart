@@ -15,3 +15,12 @@ class PasswordCriteriaVisibleState extends SignupState {
   final bool isVisible;
   PasswordCriteriaVisibleState(this.isVisible);
 }
+
+class BackState extends SignupState {
+  BackState();
+}
+
+class SigninState extends SignupState {
+  final String message;
+  SigninState(this.message);
+}

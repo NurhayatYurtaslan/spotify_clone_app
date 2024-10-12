@@ -23,3 +23,17 @@ class PasswordFocusEvent extends SignupEvent {
 class TogglePasswordVisibilityEvent extends SignupEvent {}
 
 class CheckPasswordRequirementsEvent extends SignupEvent {}
+
+class BackEvent extends SignupEvent {
+  final BuildContext context;
+  
+  BackEvent(this.context,);
+}
+
+class SigninEvent extends SignupEvent {
+  final BuildContext context;
+  final String message;
+
+  SigninEvent(this.context,
+      {this.message = 'Navigating to registration screen.'});
+}
