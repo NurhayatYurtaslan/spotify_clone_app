@@ -31,7 +31,7 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       emit(SigninLoadingState());
       final user = await authService.loginWithGoogle(event.context);
 
-      if (user != null) {
+      if (user != null && event.context.mounted) {
         emit(SigninSuccessState());
         _showSnackbar(
           context: event.context,
@@ -42,17 +42,12 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
           backgroundColor: AppColors.primary,
         );
         Future.delayed(event.context.durationMedium, () {
-          event.context.router.replace(const HomeViewRoute());
+          if (event.context.mounted) {
+            event.context.router.replace(const HomeViewRoute());
+          }
         });
-      } else {
+      } else if (event.context.mounted) {
         emit(SigninFailureState('Google sign-in failed'));
-        _showSnackbar(
-          context: event.context,
-          title: 'Warning',
-          titleColor: AppColors.errorColor,
-          message: 'Google sign-in failed.',
-          backgroundColor: AppColors.errorColor,
-        );
       }
     });
 
@@ -75,28 +70,32 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
 
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       emit(SigninFailureState('Please enter both email and password.'));
-      _showSnackbar(
-        context: event.context,
-        icon: Icons.error_outline_sharp,
-        titleColor: AppColors.warningColor,
-        title: 'Warning',
-        message: 'Please enter both email and password.',
-        backgroundColor: AppColors.warningColor,
-      );
+      if (event.context.mounted) {
+        _showSnackbar(
+          context: event.context,
+          icon: Icons.error_outline_sharp,
+          titleColor: AppColors.warningColor,
+          title: 'Warning',
+          message: 'Please enter both email and password.',
+          backgroundColor: AppColors.warningColor,
+        );
+      }
       return;
     }
 
     const emailPattern = r'^[^@]+@[^@]+\.[^@]+';
     if (!RegExp(emailPattern).hasMatch(emailController.text)) {
       emit(SigninFailureState('Your email format is incorrect.'));
-      _showSnackbar(
-        icon: Icons.email_outlined,
-        title: 'Warning',
-        titleColor: AppColors.warningColor,
-        context: event.context,
-        message: 'Your email format is incorrect.',
-        backgroundColor: AppColors.warningColor,
-      );
+      if (event.context.mounted) {
+        _showSnackbar(
+          icon: Icons.email_outlined,
+          title: 'Warning',
+          titleColor: AppColors.warningColor,
+          context: event.context,
+          message: 'Your email format is incorrect.',
+          backgroundColor: AppColors.warningColor,
+        );
+      }
       return;
     }
 
@@ -107,16 +106,21 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
       ));
 
       emit(SigninSuccessState());
-      _showSnackbar(
+      if (event.context.mounted) {
+        _showSnackbar(
           context: event.context,
           title: 'Success',
           titleColor: AppColors.primary,
           message: 'Sign in successful.',
           backgroundColor: AppColors.primary,
-          icon: Icons.check);
-      Future.delayed(event.context.durationMedium, () {
-        event.context.router.replace(const HomeViewRoute());
-      });
+          icon: Icons.check,
+        );
+        Future.delayed(event.context.durationMedium, () {
+          if (event.context.mounted) {
+            event.context.router.replace(const HomeViewRoute());
+          }
+        });
+      }
     } catch (e, stack) {
       FirebaseCrashlytics.instance.recordError(e, stack, fatal: true);
       String errorMessage = 'An error occurred. Please try again.';
@@ -126,40 +130,50 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
             : 'Email or password incorrect.';
       }
       emit(SigninFailureState(errorMessage));
-      _showSnackbar(
-        context: event.context,
-        title: 'Error',
-        titleColor: AppColors.errorColor,
-        message: errorMessage,
-        backgroundColor: AppColors.errorColor,
-      );
+      if (event.context.mounted) {
+        _showSnackbar(
+          context: event.context,
+          title: 'Error',
+          titleColor: AppColors.errorColor,
+          message: errorMessage,
+          backgroundColor: AppColors.errorColor,
+        );
+      }
     }
   }
 
   void _onBack(BackEvent event, Emitter<SigninState> emit) {
-    _showSnackbar(
-      context: event.context,
-      title: 'Please Wait',
-      titleColor: AppColors.backColor,
-      message: 'Returning to previous screen.',
-      backgroundColor: AppColors.backColor,
-    );
-    Future.delayed(event.context.durationMedium, () {
-      event.context.router.replace(const ChooseModeViewRoute());
-    });
+    if (event.context.mounted) {
+      _showSnackbar(
+        context: event.context,
+        title: 'Please Wait',
+        titleColor: AppColors.backColor,
+        message: 'Returning to previous screen.',
+        backgroundColor: AppColors.backColor,
+      );
+      Future.delayed(event.context.durationMedium, () {
+        if (event.context.mounted) {
+          event.context.router.replace(const ChooseModeViewRoute());
+        }
+      });
+    }
   }
 
   void _onRegister(RegisterEvent event, Emitter<SigninState> emit) {
-    _showSnackbar(
-      context: event.context,
-      title: 'Please Wait',
-      titleColor: AppColors.registerColor,
-      message: 'Navigating to registration screen.',
-      backgroundColor: AppColors.registerColor,
-    );
-    Future.delayed(event.context.durationMedium, () {
-      event.context.router.replace(const SignupViewRoute());
-    });
+    if (event.context.mounted) {
+      _showSnackbar(
+        context: event.context,
+        title: 'Please Wait',
+        titleColor: AppColors.registerColor,
+        message: 'Navigating to registration screen.',
+        backgroundColor: AppColors.registerColor,
+      );
+      Future.delayed(event.context.durationMedium, () {
+        if (event.context.mounted) {
+          event.context.router.replace(const SignupViewRoute());
+        }
+      });
+    }
   }
 
   void _onTogglePasswordVisibility(
@@ -176,12 +190,14 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
     IconData icon = Icons.info,
     Color titleColor = Colors.black,
   }) {
-    ModernSnackbar(
-      titleColor: titleColor,
-      title: title,
-      description: message,
-      backgroundColor: backgroundColor,
-      icon: icon,
-    ).show(context);
+    if (context.mounted) {
+      ModernSnackbar(
+        titleColor: titleColor,
+        title: title,
+        description: message,
+        backgroundColor: backgroundColor,
+        icon: icon,
+      ).show(context);
+    }
   }
 }
