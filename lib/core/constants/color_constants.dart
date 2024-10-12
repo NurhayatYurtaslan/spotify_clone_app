@@ -11,4 +11,5 @@ class AppColors {
   static const loadingColor = Color.fromARGB(255, 151, 95, 30);
   static const registerColor = Color.fromARGB(255, 136, 62, 255);
   static const backColor=Color.fromARGB(255, 44, 117, 244);
+  static const warningColor=Color.fromARGB(255, 238, 130, 22);
 }

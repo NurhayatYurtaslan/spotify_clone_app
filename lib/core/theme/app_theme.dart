@@ -3,6 +3,7 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 
 class AppTheme {
   static final lightTheme = ThemeData(
+    
     dividerColor:AppColors.darkBackground,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.lightBackground,
