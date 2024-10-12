@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:spotify_clone_app/app/router/app_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
+import 'package:spotify_clone_app/core/widgets/app_bar.dart';
 import 'package:spotify_clone_app/core/widgets/basic_app_button.dart';
 import 'package:spotify_clone_app/gen/assets.gen.dart';
 import 'view_model/signup_event.dart';
@@ -20,166 +20,169 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-  bool isLengthValid = false;
-  bool isUpperCaseValid = false;
-  bool isLowerCaseValid = false;
-  bool isDigitValid = false;
-  bool isSpecialCharacterValid = false;
-  bool isPasswordVisible = false; // Şifre görünürlük durumu
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignupViewModel(
-        onSuccessCallback: () {
-          // Snackbar'ı göster ve ardından Signin sayfasına yönlendir
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Üyeliğiniz tamamlandı!'),
-              duration: const Duration(seconds: 2),
-            ),
-          );
-
-          // 2 saniye bekle ve ardından Signin sayfasına yönlendir
-          Future.delayed(const Duration(seconds: 2), () {
-            context.router.replace(const SigninViewRoute());
-          });
-        },
-        onErrorCallback: (errorMessage) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: AppColors.errorColor,
-              content: Text(errorMessage),
-            ),
-          );
-        },
-      ),
+      create: (context) => SignupViewModel(),
       child: Builder(
         builder: (context) {
+          final viewModel = context.read<SignupViewModel>();
+
           return Scaffold(
-            appBar: AppBar(
+            appBar: BasicAppbar(
               title: SvgPicture.asset(
                 Assets.images.svg.spotifyLogo,
                 height: context.mediumValue,
                 width: context.highValue,
               ),
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  context.read<SignupViewModel>().add(BackToSigninEvent(context));
-                },
-              ),
-            ),
-            body: BlocListener<SignupViewModel, SignupState>(
-              listener: (context, state) {
-                if (state is SignupFailureState) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: AppColors.errorColor,
-                      content: Text(state.errorMessage),
-                    ),
-                  );
-                }
+              onPressed: () {
+                context.read<SignupViewModel>().add(BackEvent(context));
               },
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(context.mediumValue),
-                  child: Column(
-                    children: [
-                      _buildUsernameField(context),
-                      context.sizedHeightBoxHigh,
-                      _buildEmailField(context),
-                      context.sizedHeightBoxHigh,
-                      _buildPasswordField(context),
-                      context.sizedHeightBoxHigh,
-                      _buildPasswordCriteria(),
-                      context.sizedHeightBoxHigh,
-                      BasicAppButton(
-                        onPressed: () {
-                          context.read<SignupViewModel>().add(
-                            SignupInitialEvent(context),
-                          );
-                        },
-                        title: 'Sign Up',
+            ),
+            body: SingleChildScrollView(
+              padding: EdgeInsets.all(context.mediumValue),
+              child: Column(
+                children: [
+                  _buildUsernameField(viewModel),
+                  context.sizedHeightBoxHigh,
+                  _buildEmailField(viewModel),
+                  context.sizedHeightBoxHigh,
+                  _buildPasswordField(viewModel),
+                  context.sizedHeightBoxHigh,
+                  _buildSignupButton(viewModel, context),
+                  context.sizedHeightBoxLow,
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text(
+                      'Have A Account?',
+                      style: TextStyle(fontSize: context.normalValue * 1.2),
+                    ),
+                    context.sizedWidthBoxLow,
+                    InkWell(
+                      onTap: () {
+                        context
+                            .read<SignupViewModel>()
+                            .add(SigninEvent(context));
+                      },
+                      child: Text(
+                        'Signin Now',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: context.normalValue * 1.2,
+                        ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  ])
+                ],
               ),
             ),
           );
-        }
+        },
       ),
     );
   }
 
-  TextField _buildUsernameField(BuildContext context) {
-    return TextField(
-      controller: context.read<SignupViewModel>().usernameController,
+  TextFormField _buildUsernameField(SignupViewModel viewModel) {
+    return TextFormField(
+      controller: viewModel.usernameController,
       decoration: const InputDecoration(labelText: 'Username'),
     );
   }
 
-  TextField _buildEmailField(BuildContext context) {
-    return TextField(
-      controller: context.read<SignupViewModel>().emailController,
+  TextFormField _buildEmailField(SignupViewModel viewModel) {
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      controller: viewModel.emailController,
       decoration: const InputDecoration(labelText: 'Email'),
     );
   }
 
-  TextField _buildPasswordField(BuildContext context) {
-    return TextField(
-      controller: context.read<SignupViewModel>().passwordController,
-      obscureText: !isPasswordVisible, // Şifre görünürlüğünü ayarlama
-      decoration: InputDecoration(
-        labelText: 'Password',
-        suffixIcon: IconButton(
-          icon: Icon(
-            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-          ),
-          onPressed: () {
-            setState(() {
-              isPasswordVisible = !isPasswordVisible;
-            });
-          },
-        ),
-      ),
-      onChanged: (password) {
-        setState(() {
-          isLengthValid = password.length >= 8;
-          isUpperCaseValid = password.contains(RegExp(r'[A-Z]'));
-          isLowerCaseValid = password.contains(RegExp(r'[a-z]'));
-          isDigitValid = password.contains(RegExp(r'[0-9]'));
-          isSpecialCharacterValid = password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-        });
+  Widget _buildPasswordField(SignupViewModel viewModel) {
+    return BlocBuilder<SignupViewModel, SignupState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              controller: viewModel.passwordController,
+              focusNode: viewModel.passwordFocusNode, // FocusNode'u ekle
+              obscureText: !viewModel.isPasswordVisible,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    viewModel.isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    viewModel.togglePasswordVisibility();
+                  },
+                ),
+              ),
+              onTap: () {
+                // Şifre gereksinimlerini görünür yap
+                viewModel.togglePasswordRequirementsVisibility();
+              },
+              onChanged: (value) {
+                // Şifre gereksinimlerini kontrol et
+                viewModel.add(CheckPasswordRequirementsEvent());
+              },
+            ),
+            if (viewModel.passwordRequirementsVisible)
+              _buildPasswordRequirements(viewModel),
+          ],
+        );
       },
     );
   }
 
-  Column _buildPasswordCriteria() {
+  Widget _buildPasswordRequirements(SignupViewModel viewModel) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Password must meet the following criteria:'),
-        _buildCriteriaRow('At least 8 characters', isLengthValid),
-        _buildCriteriaRow('At least 1 uppercase letter', isUpperCaseValid),
-        _buildCriteriaRow('At least 1 lowercase letter', isLowerCaseValid),
-        _buildCriteriaRow('At least 1 digit', isDigitValid),
-        _buildCriteriaRow('At least 1 special character', isSpecialCharacterValid),
+        _buildRequirementRow(
+          'At least 8 characters',
+          viewModel.passwordRequirementsMet[0],
+        ),
+        _buildRequirementRow(
+          'One uppercase letter',
+          viewModel.passwordRequirementsMet[1],
+        ),
+        _buildRequirementRow(
+          'One lowercase letter',
+          viewModel.passwordRequirementsMet[2],
+        ),
+        _buildRequirementRow(
+          'One number',
+          viewModel.passwordRequirementsMet[3],
+        ),
+        _buildRequirementRow(
+          'One special character (e.g., @, #, \$, %, &, .)',
+          viewModel.passwordRequirementsMet[4],
+        ),
       ],
     );
   }
 
-  Row _buildCriteriaRow(String text, bool isValid) {
+  Widget _buildRequirementRow(String requirement, bool isMet) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Text(requirement),
         Icon(
-          isValid ? Icons.check : Icons.close,
-          color: isValid ? Colors.green : Colors.red,
+          isMet ? Icons.check : Icons.close,
+          color: isMet ? Colors.green : Colors.red,
         ),
-        SizedBox(width: 8),
-        Text(text),
       ],
+    );
+  }
+
+  Widget _buildSignupButton(SignupViewModel viewModel, BuildContext context) {
+    return BasicAppButton(
+      onPressed: () {
+        viewModel.add(SignupInitialEvent(context));
+      },
+      title: 'Sign Up',
     );
   }
 }

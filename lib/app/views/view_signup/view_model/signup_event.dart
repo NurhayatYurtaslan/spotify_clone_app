@@ -2,20 +2,38 @@ import 'package:flutter/material.dart';
 
 abstract class SignupEvent {}
 
+class BackToSigninEvent extends SignupEvent {
+  final BuildContext context;
+
+  BackToSigninEvent(this.context);
+}
+
 class SignupInitialEvent extends SignupEvent {
   final BuildContext context;
 
   SignupInitialEvent(this.context);
 }
 
-class SignupWithGoogleEvent extends SignupEvent {
-  final BuildContext context;
+class PasswordFocusEvent extends SignupEvent {
+  final bool isFocused;
 
-  SignupWithGoogleEvent(this.context);
+  PasswordFocusEvent(this.isFocused);
 }
 
-class BackToSigninEvent extends SignupEvent {
-  final BuildContext context;
+class TogglePasswordVisibilityEvent extends SignupEvent {}
 
-  BackToSigninEvent(this.context);
+class CheckPasswordRequirementsEvent extends SignupEvent {}
+
+class BackEvent extends SignupEvent {
+  final BuildContext context;
+  
+  BackEvent(this.context,);
+}
+
+class SigninEvent extends SignupEvent {
+  final BuildContext context;
+  final String message;
+
+  SigninEvent(this.context,
+      {this.message = 'Navigating to registration screen.'});
 }
