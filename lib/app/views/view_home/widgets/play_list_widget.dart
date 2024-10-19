@@ -29,9 +29,6 @@ class PlayListWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-            height: 20,
-          ),
         ],
       ),
     );
