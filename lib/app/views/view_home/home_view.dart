@@ -55,7 +55,7 @@ class HomeView extends StatelessWidget {
                   else if (state.songs!.isEmpty)
                     const Center(
                       child: Text(
-                        "Şarkı bulunamadı",
+                        "Not Found Song",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -63,19 +63,19 @@ class HomeView extends StatelessWidget {
                       ),
                     )
                   else
-                    SizedBox(
-                      height: 400, // Listeyi gösterecek alan
+                    AnimatedContainer(
+                      duration: context.durationMedium,
+                      height: state.showSeeMore ? null : context.highValue * 5,
                       child: ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.showSeeMore ? state.songs!.length : 3,
                         itemBuilder: (context, index) {
                           final song = state.songs![index];
-
                           return ListTile(
                             leading: Container(
-                              height: 45,
-                              width: 45,
+                              height: context.highValue,
+                              width: context.highValue,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: context.isDarkMode
@@ -105,7 +105,8 @@ class HomeView extends StatelessWidget {
                                 Text(
                                   (song['duration'] ?? 0.0).toString(),
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 16),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
                                 ),
                                 IconButton(
                                   icon: Icon(
