@@ -6,13 +6,16 @@ import 'package:spotify_clone_app/core/helpers/is_dark_mode.dart';
 class PlayListWidget extends StatelessWidget {
   const PlayListWidget({
     super.key,
+    required this.text,
     required this.showSeeMore,
-    required this.onSeeMorePressed, // Callback fonksiyonu ekledik
+    required this.onSeeMorePressed,
+    required this.onSeeLessPressed,
   });
 
-  final bool showSeeMore; // See More durumunu tutmak için bir değişken
-  final VoidCallback
-      onSeeMorePressed; // See More butonuna tıklanınca çalışacak fonksiyon
+  final String text; 
+  final bool showSeeMore; 
+  final VoidCallback onSeeMorePressed; 
+  final VoidCallback onSeeLessPressed; 
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +28,13 @@ class PlayListWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Playlist',
+                'Playlist', // Daha açıklayıcı bir başlık düşünülebilir
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               GestureDetector(
-                onTap:
-                    onSeeMorePressed, // Butona tıklandığında çalışacak fonksiyon
+                onTap: showSeeMore ? onSeeLessPressed : onSeeMorePressed, // Duruma göre tıklama olayları
                 child: Text(
-                  'See More',
+                  showSeeMore ? "See Less" : text, // Duruma göre metin değişikliği
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
