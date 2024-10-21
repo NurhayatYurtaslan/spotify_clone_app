@@ -39,10 +39,14 @@ class HomeView extends StatelessWidget {
                 children: [
                   const HomeTopCardWidget(),
                   PlayListWidget(
-                    showSeeMore: state.showSeeMore, // Durumu geçiriyoruz
+                    showSeeMore: state.showSeeMore,
                     onSeeMorePressed: () {
                       context.read<HomeViewModel>().add(SeeMoreEvent());
-                    }, // See More butonuna tıklanınca çalışacak fonksiyon
+                    },
+                    text: state.showSeeMore ? 'Less More' : 'See More',
+                    onSeeLessPressed: () {
+                      context.read<HomeViewModel>().add(SeeLessEvent());
+                    },
                   ),
                   if (state.songs == null)
                     const Center(
@@ -53,72 +57,70 @@ class HomeView extends StatelessWidget {
                       child: Text(
                         "Şarkı bulunamadı",
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     )
                   else
-                    Column(
-                      children: [
-                        // Şarkıları göster
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.showSeeMore
-                              ? 3
-                              : state.songs!.length,
-                          itemBuilder: (context, index) {
-                            final song = state.songs![index];
-                            return ListTile(
-                              leading: Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: context.isDarkMode
-                                      ? AppColors.darkGrey
-                                      : AppColors.grey,
+                    SizedBox(
+                      height: 400, // Listeyi gösterecek alan
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.showSeeMore ? state.songs!.length : 3,
+                        itemBuilder: (context, index) {
+                          final song = state.songs![index];
+
+                          return ListTile(
+                            leading: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context.isDarkMode
+                                    ? AppColors.darkGrey
+                                    : AppColors.grey,
+                              ),
+                              child: Icon(
+                                Icons.play_arrow_rounded,
+                                color: context.isDarkMode
+                                    ? AppColors.grey
+                                    : AppColors.darkGrey,
+                              ),
+                            ),
+                            title: Text(
+                              song['title'] ?? 'Unknown Title',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            subtitle: Text(
+                              song['artist'] ?? 'Unknown Artist',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 11),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  (song['duration'] ?? 0.0).toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 16),
                                 ),
-                                child: Icon(
-                                  Icons.play_arrow_rounded,
-                                  color: context.isDarkMode
-                                      ? AppColors.grey
-                                      : AppColors.darkGrey,
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.favorite,
+                                    color: context.isDarkMode
+                                        ? AppColors.darkGrey
+                                        : AppColors.grey,
+                                  ),
+                                  onPressed: () {},
                                 ),
-                              ),
-                              title: Text(
-                                song['title'] ?? 'Unknown Title',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              subtitle: Text(
-                                song['artist'] ?? 'Unknown Artist',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 11),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    (song['duration'] ?? 0.0).toString(),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.favorite,
-                                        color: context.isDarkMode
-                                            ? AppColors.darkGrey
-                                            : AppColors.grey),
-                                    onPressed: () {
-                                      // Favori durumu kontrolü buraya eklenebilir
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                 ],
               ),
