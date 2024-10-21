@@ -38,58 +38,88 @@ class HomeView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const HomeTopCardWidget(),
-                  const PlayListWidget(),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.songs!.length,
-                    itemBuilder: (context, index) {
-                      final song = state.songs![index];
-                      return ListTile(
-                        leading: Container(
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: context.isDarkMode
-                                  ? AppColors.darkGrey
-                                  : AppColors.grey),
-                          child: Icon(Icons.play_arrow_rounded,
-                              color: context.isDarkMode
-                                  ? AppColors.grey
-                                  : AppColors.darkGrey),
-                        ),
-                        title: Text(
-                          song['title'] ?? 'Unknown Title',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        subtitle: Text(
-                          song['artist'] ?? 'Unknown Artist',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 11),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              (song['duration'] ?? 0.0).toString(),
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.favorite,
+                  PlayListWidget(
+                    showSeeMore: state.showSeeMore, // Durumu geçiriyoruz
+                    onSeeMorePressed: () {
+                      context.read<HomeViewModel>().add(SeeMoreEvent());
+                    }, // See More butonuna tıklanınca çalışacak fonksiyon
+                  ),
+                  if (state.songs == null)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  else if (state.songs!.isEmpty)
+                    const Center(
+                      child: Text(
+                        "Şarkı bulunamadı",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  else
+                    Column(
+                      children: [
+                        // Şarkıları göster
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.showSeeMore
+                              ? 3
+                              : state.songs!.length,
+                          itemBuilder: (context, index) {
+                            final song = state.songs![index];
+                            return ListTile(
+                              leading: Container(
+                                height: 45,
+                                width: 45,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
                                   color: context.isDarkMode
                                       ? AppColors.darkGrey
-                                      : AppColors.grey // Favori durumu kontrolü
+                                      : AppColors.grey,
+                                ),
+                                child: Icon(
+                                  Icons.play_arrow_rounded,
+                                  color: context.isDarkMode
+                                      ? AppColors.grey
+                                      : AppColors.darkGrey,
+                                ),
+                              ),
+                              title: Text(
+                                song['title'] ?? 'Unknown Title',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              subtitle: Text(
+                                song['artist'] ?? 'Unknown Artist',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 11),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    (song['duration'] ?? 0.0).toString(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
                                   ),
-                              onPressed: () {},
-                            ),
-                          ],
+                                  IconButton(
+                                    icon: Icon(Icons.favorite,
+                                        color: context.isDarkMode
+                                            ? AppColors.darkGrey
+                                            : AppColors.grey),
+                                    onPressed: () {
+                                      // Favori durumu kontrolü buraya eklenebilir
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
+                      ],
+                    ),
                 ],
               ),
             ),
