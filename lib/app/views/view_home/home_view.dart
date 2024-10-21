@@ -38,58 +38,91 @@ class HomeView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const HomeTopCardWidget(),
-                  const PlayListWidget(),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.songs!.length,
-                    itemBuilder: (context, index) {
-                      final song = state.songs![index];
-                      return ListTile(
-                        leading: Container(
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: context.isDarkMode
-                                  ? AppColors.darkGrey
-                                  : AppColors.grey),
-                          child: Icon(Icons.play_arrow_rounded,
-                              color: context.isDarkMode
-                                  ? AppColors.grey
-                                  : AppColors.darkGrey),
+                  PlayListWidget(
+                    showSeeMore: state.showSeeMore,
+                    onSeeMorePressed: () {
+                      context.read<HomeViewModel>().add(SeeMoreEvent());
+                    },
+                    text: state.showSeeMore ? 'Less More' : 'See More',
+                    onSeeLessPressed: () {
+                      context.read<HomeViewModel>().add(SeeLessEvent());
+                    },
+                  ),
+                  if (state.songs == null)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  else if (state.songs!.isEmpty)
+                    const Center(
+                      child: Text(
+                        "Not Found Song",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        title: Text(
-                          song['title'] ?? 'Unknown Title',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        subtitle: Text(
-                          song['artist'] ?? 'Unknown Artist',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 11),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              (song['duration'] ?? 0.0).toString(),
+                      ),
+                    )
+                  else
+                    AnimatedContainer(
+                      duration: context.durationMedium,
+                      height: state.showSeeMore ? null : context.highValue * 5,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.showSeeMore ? state.songs!.length : 3,
+                        itemBuilder: (context, index) {
+                          final song = state.songs![index];
+                          return ListTile(
+                            leading: Container(
+                              height: context.highValue,
+                              width: context.highValue,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context.isDarkMode
+                                    ? AppColors.darkGrey
+                                    : AppColors.grey,
+                              ),
+                              child: Icon(
+                                Icons.play_arrow_rounded,
+                                color: context.isDarkMode
+                                    ? AppColors.grey
+                                    : AppColors.darkGrey,
+                              ),
+                            ),
+                            title: Text(
+                              song['title'] ?? 'Unknown Title',
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.favorite,
-                                  color: context.isDarkMode
-                                      ? AppColors.darkGrey
-                                      : AppColors.grey // Favori durumu kontrolü
-                                  ),
-                              onPressed: () {},
+                            subtitle: Text(
+                              song['artist'] ?? 'Unknown Artist',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 11),
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  (song['duration'] ?? 0.0).toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.favorite,
+                                    color: context.isDarkMode
+                                        ? AppColors.darkGrey
+                                        : AppColors.grey,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                 ],
               ),
             ),
