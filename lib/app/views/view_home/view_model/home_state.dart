@@ -1,68 +1,76 @@
+import 'package:spotify_clone_app/core/repository/model/songs/songs_model.dart';
+
 abstract class HomeState {
-  final List<dynamic>? songs;
-  final List<dynamic>? playList;
+  final List<Song>? songs; // List of Song type
+  final List<Song>? filteredSongs;  
+  final List<dynamic>? playList; // Suitable type for Playlist items
   final bool showSeeMore;
 
   HomeState({
     required this.showSeeMore,
     this.songs,
+    this.filteredSongs,  
     this.playList,
   });
 
   HomeState copyWith({
-    List<dynamic>? songs,
+    List<Song>? songs,
+    List<Song>? filteredSongs,  
     List<dynamic>? playList,
     bool? showSeeMore,
   });
 }
 
-class HomeInitialState extends HomeState {
-  HomeInitialState({super.songs, super.playList, required super.showSeeMore});
+class HomeLoadedState extends HomeState {
+  HomeLoadedState({
+    super.songs,
+    super.playList,
+    required super.showSeeMore,
+    super.filteredSongs,  
+  });
 
   @override
-  HomeInitialState copyWith({
-    List<dynamic>? songs,
+  HomeLoadedState copyWith({
+    List<Song>? songs,
+    List<Song>? filteredSongs, 
     List<dynamic>? playList,
     bool? showSeeMore,
   }) {
-    return HomeInitialState(
+    return HomeLoadedState(
       songs: songs ?? this.songs,
+      filteredSongs: filteredSongs ?? this.filteredSongs,  
       playList: playList ?? this.playList,
       showSeeMore: showSeeMore ?? this.showSeeMore,
     );
   }
 }
 
-class SeeMoreState extends HomeState {
-  SeeMoreState({super.songs, super.playList, required super.showSeeMore});
-
+class HomeLoadingState extends HomeState {
+  HomeLoadingState() : super(showSeeMore: false);
+  
   @override
-  SeeMoreState copyWith({
-    List<dynamic>? songs,
+  HomeLoadingState copyWith({
+    List<Song>? songs,
+    List<Song>? filteredSongs,
     List<dynamic>? playList,
     bool? showSeeMore,
   }) {
-    return SeeMoreState(
-      songs: songs ?? this.songs,
-      playList: playList ?? this.playList,
-      showSeeMore: showSeeMore ?? this.showSeeMore,
-    );
+    return HomeLoadingState(); // Loading state doesn't change
   }
 }
 
-class SeeLessState extends HomeState {
-  SeeLessState({super.songs, super.playList, required super.showSeeMore});
+class HomeErrorState extends HomeState {
+  final String message;
 
+  HomeErrorState({required this.message}) : super(showSeeMore: false);
+  
   @override
-  SeeLessState copyWith({
-    List<dynamic>? songs,
+  HomeErrorState copyWith({
+    List<Song>? songs,
+    List<Song>? filteredSongs,
     List<dynamic>? playList,
     bool? showSeeMore,
   }) {
-    return SeeLessState(
-      songs: songs ?? this.songs,
-      playList: playList ?? this.playList,
-      showSeeMore: showSeeMore ?? this.showSeeMore,
-    );
+    return HomeErrorState(message: message); // Error state doesn't change
   }
 }
