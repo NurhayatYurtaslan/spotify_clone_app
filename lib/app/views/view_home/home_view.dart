@@ -1,15 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:spotify_clone_app/app/views/view_home/view_model/home_event.dart';
 import 'package:spotify_clone_app/app/views/view_home/view_model/home_state.dart';
 import 'package:spotify_clone_app/app/views/view_home/view_model/home_view_model.dart';
 import 'package:spotify_clone_app/app/views/view_home/widgets/home_top_card_widget.dart';
 import 'package:spotify_clone_app/app/views/view_home/widgets/play_list_widget.dart';
-import 'package:spotify_clone_app/core/constants/color_constants.dart';
+import 'package:spotify_clone_app/app/views/view_home/widgets/song_search_delegate_widget.dart';
+import 'package:spotify_clone_app/app/views/view_home/widgets/song_tile_widget.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
-import 'package:spotify_clone_app/core/helpers/is_dark_mode.dart';
 import 'package:spotify_clone_app/core/widgets/app_bar.dart';
 import 'package:spotify_clone_app/gen/assets.gen.dart';
 
@@ -24,111 +24,151 @@ class HomeView extends StatelessWidget {
       child: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: BasicAppbar(
-              hideBack: true,
-              onPressed: () {},
-              title: SvgPicture.asset(
-                Assets.images.svg.spotifyLogo,
-                height: context.mediumValue,
-                width: context.highValue,
-              ),
-            ),
-            body: SingleChildScrollView(
+            appBar: _buildAppBar(context, state),
+            body: _buildBody(context, state),
+          );
+        },
+      ),
+    );
+  }
+
+  BasicAppbar _buildAppBar(BuildContext context, HomeState state) {
+    return BasicAppbar(
+      hideBack: true,
+      onPressed: () {},
+      title: SvgPicture.asset(
+        Assets.images.svg.spotifyLogo,
+        height: context.mediumValue,
+        width: context.highValue,
+      ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () {
+            showSearch(
+              context: context,
+              delegate: SongSearchDelegate(state.songs ?? []),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBody(BuildContext context, HomeState state) {
+    if (state.songs == null) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is HomeErrorState) {
+      return Center(child: Text(state.message)); // Show error message
+    }
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const HomeTopCardWidget(),
+          context.sizedHeightBoxNormal,
+          _buildSongList(context, state),
+          _buildPlayList(context, state),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSongList(BuildContext context, HomeState state) {
+    return SizedBox(
+      width: context.width,
+      height: context.height * .2, // Yüksekliği biraz artırdım
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: state.songs!.length,
+        itemBuilder: (context, index) {
+          final song = state.songs![index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              width: context.width * 0.4, // Genişliği ayarladım
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const HomeTopCardWidget(),
-                  PlayListWidget(
-                    showSeeMore: state.showSeeMore,
-                    onSeeMorePressed: () {
-                      context.read<HomeViewModel>().add(SeeMoreEvent());
-                    },
-                    text: state.showSeeMore ? 'Less More' : 'See More',
-                    onSeeLessPressed: () {
-                      context.read<HomeViewModel>().add(SeeLessEvent());
-                    },
-                  ),
-                  if (state.songs == null)
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  else if (state.songs!.isEmpty)
-                    const Center(
-                      child: Text(
-                        "Not Found Song",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  else
-                    AnimatedContainer(
-                      duration: context.durationMedium,
-                      height: state.showSeeMore ? null : context.highValue * 5,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.showSeeMore ? state.songs!.length : 3,
-                        itemBuilder: (context, index) {
-                          final song = state.songs![index];
-                          return ListTile(
-                            leading: Container(
-                              height: context.highValue,
-                              width: context.highValue,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context.isDarkMode
-                                    ? AppColors.darkGrey
-                                    : AppColors.grey,
-                              ),
-                              child: Icon(
-                                Icons.play_arrow_rounded,
-                                color: context.isDarkMode
-                                    ? AppColors.grey
-                                    : AppColors.darkGrey,
-                              ),
-                            ),
-                            title: Text(
-                              song['title'] ?? 'Unknown Title',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            subtitle: Text(
-                              song['artist'] ?? 'Unknown Artist',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 11),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  (song['duration'] ?? 0.0).toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.favorite,
-                                    color: context.isDarkMode
-                                        ? AppColors.darkGrey
-                                        : AppColors.grey,
-                                  ),
-                                  onPressed: () {},
-                                ),
-                              ],
-                            ),
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(8.0), // Köşeleri yuvarladım
+                      child: Image.network(
+                        song.imageUrl, // Şarkının görsel URL'sini kullanıyoruz
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey,
+                            child: const Icon(Icons.music_note,
+                                color: Colors.white),
                           );
                         },
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                      height: 8.0), // Görsel ile yazılar arasındaki boşluk
+                  Text(
+                    song.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis, // Uzun başlıklar için
+                  ),
+                  Text(
+                    song.artist,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    maxLines: 1,
+                    overflow:
+                        TextOverflow.ellipsis, // Uzun sanatçı isimleri için
+                  ),
                 ],
               ),
             ),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildPlayList(BuildContext context, HomeState state) {
+    return Column(
+      children: [
+        PlayListWidget(
+          showSeeMore: state.showSeeMore,
+          onSeeMorePressed: () {
+            context.read<HomeViewModel>().add(SeeMoreEvent());
+          },
+          text: state.showSeeMore ? 'See Less' : 'See More',
+          onSeeLessPressed: () {
+            context.read<HomeViewModel>().add(SeeLessEvent());
+          },
+        ),
+        AnimatedContainer(
+          duration: context.durationMedium,
+          height: state.showSeeMore ? null : context.highValue * 5,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: state.showSeeMore ? state.songs!.length : 3,
+            itemBuilder: (context, index) {
+              final song = state.songs![index];
+              return SizedBox(
+                width: context.width,
+                child: SongTile(
+                  song: song,
+                  onFavoritePressed: () {
+                    // Handle favorite button press
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
