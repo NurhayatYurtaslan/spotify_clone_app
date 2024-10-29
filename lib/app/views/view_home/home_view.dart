@@ -113,10 +113,8 @@ class HomeView extends StatelessWidget {
                         song.imageUrl, // Şarkının görsel URL'sini kullanıyoruz
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            child: const Icon(
-                              Icons.music_note,
-                            ),
+                          return const Icon(
+                            Icons.music_note,
                           );
                         },
                       ),
