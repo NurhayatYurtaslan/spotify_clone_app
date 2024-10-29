@@ -3,6 +3,16 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 
 class AppTheme {
   static final lightTheme = ThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      showSelectedLabels: false,
+      backgroundColor: AppColors.lightBackground,
+      unselectedIconTheme: IconThemeData(color: AppColors.darkBackground),
+      selectedIconTheme: IconThemeData(
+        color: AppColors.primary,
+        size: 36,
+      ),
+    ),
+
     drawerTheme:
         const DrawerThemeData(backgroundColor: AppColors.lightBackground),
     dividerColor: AppColors.darkBackground,
@@ -50,6 +60,11 @@ class AppTheme {
   );
 
   static final darkTheme = ThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        showSelectedLabels: false,
+        backgroundColor: AppColors.darkBackground,
+        unselectedIconTheme: IconThemeData(color: AppColors.lightBackground),
+        selectedIconTheme: IconThemeData(color: AppColors.primary, size: 36)),
     drawerTheme:
         const DrawerThemeData(backgroundColor: AppColors.darkBackground),
     dividerColor: Colors.white,
