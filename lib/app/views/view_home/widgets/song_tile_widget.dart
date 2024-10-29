@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:spotify_clone_app/core/repository/model/songs/songs_model.dart';
@@ -10,8 +9,8 @@ class SongTile extends StatelessWidget {
   const SongTile({
     required this.song,
     required this.onFavoritePressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
