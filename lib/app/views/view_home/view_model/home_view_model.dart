@@ -30,7 +30,6 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
         emit(HomeLoadedState(songs: [], filteredSongs: [], showSeeMore: false));
       }
     } catch (e) {
-      print("Error fetching songs: $e");
       emit(HomeErrorState(message: "Unable to fetch songs. Please try again later."));
     }
   }

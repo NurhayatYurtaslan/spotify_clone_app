@@ -8,14 +8,7 @@ class SongSearchDelegate extends SearchDelegate<Song?> {
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = ''; // Clear the search query
-        },
-      ),
-    ];
+    return [];
   }
 
   @override
@@ -46,7 +39,8 @@ class SongSearchDelegate extends SearchDelegate<Song?> {
           title: Text(song.title), // Use null-aware operator
           subtitle: Text(song.artist), // Use null-aware operator
           onTap: () {
-            close(context, song); // Close search screen and return the selected song
+            close(context,
+                song); // Close search screen and return the selected song
           },
         );
       },
@@ -74,10 +68,11 @@ class SongSearchDelegate extends SearchDelegate<Song?> {
   }
 
   List<Song> _getSearchResults() {
-    final lowerQuery = query.toLowerCase(); // Cache the lower case query for reuse
+    final lowerQuery =
+        query.toLowerCase(); // Cache the lower case query for reuse
     return songs.where((song) {
-      return (song.title.toLowerCase().contains(lowerQuery)) || 
-             (song.artist.toLowerCase().contains(lowerQuery)); // Safe access
+      return (song.title.toLowerCase().contains(lowerQuery)) ||
+          (song.artist.toLowerCase().contains(lowerQuery)); // Safe access
     }).toList();
   }
 }

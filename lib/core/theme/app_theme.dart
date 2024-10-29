@@ -3,8 +3,19 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 
 class AppTheme {
   static final lightTheme = ThemeData(
-    
-    dividerColor:AppColors.darkBackground,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      showSelectedLabels: false,
+      backgroundColor: AppColors.lightBackground,
+      unselectedIconTheme: IconThemeData(color: AppColors.darkBackground),
+      selectedIconTheme: IconThemeData(
+        color: AppColors.primary,
+        size: 36,
+      ),
+    ),
+
+    drawerTheme:
+        const DrawerThemeData(backgroundColor: AppColors.lightBackground),
+    dividerColor: AppColors.darkBackground,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.lightBackground,
     brightness: Brightness.light,
@@ -49,7 +60,14 @@ class AppTheme {
   );
 
   static final darkTheme = ThemeData(
-    dividerColor:Colors.white,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        showSelectedLabels: false,
+        backgroundColor: AppColors.darkBackground,
+        unselectedIconTheme: IconThemeData(color: AppColors.lightBackground),
+        selectedIconTheme: IconThemeData(color: AppColors.primary, size: 36)),
+    drawerTheme:
+        const DrawerThemeData(backgroundColor: AppColors.darkBackground),
+    dividerColor: Colors.white,
     primaryColor: AppColors.darkBackground,
     scaffoldBackgroundColor: AppColors.darkBackground,
     brightness: Brightness.dark,
@@ -101,6 +119,5 @@ class AppTheme {
         color: Colors.white, // Koyu tema için renk
       ),
     ),
-
   );
 }
