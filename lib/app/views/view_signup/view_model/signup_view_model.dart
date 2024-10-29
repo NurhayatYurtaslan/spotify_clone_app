@@ -123,7 +123,7 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
 
         Future.delayed(event.context.durationLow, () {
           if (event.context.mounted) {
-            event.context.router.replace(const HomeViewRoute());
+            event.context.router.replace(HomeViewRoute());
           }
         });
       }
@@ -172,7 +172,7 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
 
       Future.delayed(event.context.durationLow, () {
         if (event.context.mounted) {
-          event.context.router.replace(const HomeViewRoute());
+          event.context.router.replace(HomeViewRoute());
         }
       });
     }

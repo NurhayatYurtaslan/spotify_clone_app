@@ -43,7 +43,7 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
         );
         Future.delayed(event.context.durationMedium, () {
           if (event.context.mounted) {
-            event.context.router.replace(const HomeViewRoute());
+            event.context.router.replace(HomeViewRoute());
           }
         });
       } else if (event.context.mounted) {
@@ -117,7 +117,7 @@ class SigninViewModel extends Bloc<SigninEvent, SigninState> {
         );
         Future.delayed(event.context.durationMedium, () {
           if (event.context.mounted) {
-            event.context.router.replace(const HomeViewRoute());
+            event.context.router.replace(HomeViewRoute());
           }
         });
       }
