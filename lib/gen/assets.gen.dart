@@ -55,6 +55,10 @@ class $AssetsIconsSvgGen {
 class $AssetsImagesPngGen {
   const $AssetsImagesPngGen();
 
+  /// File path: assets/images/png/app_logo.png
+  AssetGenImage get appLogo =>
+      const AssetGenImage('assets/images/png/app_logo.png');
+
   /// File path: assets/images/png/auth_bg.png
   AssetGenImage get authBg =>
       const AssetGenImage('assets/images/png/auth_bg.png');
@@ -62,6 +66,10 @@ class $AssetsImagesPngGen {
   /// File path: assets/images/png/choose_mode_bg.png
   AssetGenImage get chooseModeBg =>
       const AssetGenImage('assets/images/png/choose_mode_bg.png');
+
+  /// File path: assets/images/png/drawer_image.png
+  AssetGenImage get drawerImage =>
+      const AssetGenImage('assets/images/png/drawer_image.png');
 
   /// File path: assets/images/png/home_artist.png
   AssetGenImage get homeArtist =>
@@ -72,7 +80,8 @@ class $AssetsImagesPngGen {
       const AssetGenImage('assets/images/png/intro_bg.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [authBg, chooseModeBg, homeArtist, introBg];
+  List<AssetGenImage> get values =>
+      [appLogo, authBg, chooseModeBg, drawerImage, homeArtist, introBg];
 }
 
 class $AssetsImagesSvgGen {
