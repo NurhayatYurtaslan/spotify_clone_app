@@ -30,10 +30,13 @@ class ChooseModeViewRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [HomeView]
-class HomeViewRoute extends PageRouteInfo<void> {
-  const HomeViewRoute({List<PageRouteInfo>? children})
-      : super(
+class HomeViewRoute extends PageRouteInfo<HomeViewRouteArgs> {
+  HomeViewRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           HomeViewRoute.name,
+          args: HomeViewRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -42,9 +45,22 @@ class HomeViewRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const HomeView();
+      final args = data.argsAs<HomeViewRouteArgs>(
+          orElse: () => const HomeViewRouteArgs());
+      return HomeView(key: args.key);
     },
   );
+}
+
+class HomeViewRouteArgs {
+  const HomeViewRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'HomeViewRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -62,6 +78,44 @@ class IntroViewRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const IntroView();
+    },
+  );
+}
+
+/// generated route for
+/// [ProfileView]
+class ProfileViewRoute extends PageRouteInfo<void> {
+  const ProfileViewRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfileViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ProfileView();
+    },
+  );
+}
+
+/// generated route for
+/// [SettingsView]
+class SettingsViewRoute extends PageRouteInfo<void> {
+  const SettingsViewRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingsViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingsViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingsView();
     },
   );
 }
