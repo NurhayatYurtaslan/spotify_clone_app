@@ -29,6 +29,44 @@ class ChooseModeViewRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ExploreView]
+class ExploreViewRoute extends PageRouteInfo<void> {
+  const ExploreViewRoute({List<PageRouteInfo>? children})
+      : super(
+          ExploreViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ExploreViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ExploreView();
+    },
+  );
+}
+
+/// generated route for
+/// [FavoriteView]
+class FavoriteViewRoute extends PageRouteInfo<void> {
+  const FavoriteViewRoute({List<PageRouteInfo>? children})
+      : super(
+          FavoriteViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FavoriteViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const FavoriteView();
+    },
+  );
+}
+
+/// generated route for
 /// [HomeView]
 class HomeViewRoute extends PageRouteInfo<HomeViewRouteArgs> {
   HomeViewRoute({
@@ -78,6 +116,25 @@ class IntroViewRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const IntroView();
+    },
+  );
+}
+
+/// generated route for
+/// [NavBarView]
+class NavBarViewRoute extends PageRouteInfo<void> {
+  const NavBarViewRoute({List<PageRouteInfo>? children})
+      : super(
+          NavBarViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NavBarViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NavBarView();
     },
   );
 }
