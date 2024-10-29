@@ -90,98 +90,104 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _buildSongList(BuildContext context, HomeState state) {
-    return SizedBox(
-      width: context.width,
-      height: context.height * .2, // Yüksekliği biraz artırdım
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: state.songs!.length,
-        itemBuilder: (context, index) {
-          final song = state.songs![index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: SizedBox(
-              width: context.width * 0.4, // Genişliği ayarladım
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(8.0), // Köşeleri yuvarladım
-                      child: Image.network(
-                        song.imageUrl, // Şarkının görsel URL'sini kullanıyoruz
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.music_note,
-                          );
-                        },
+    return Padding(
+      padding: EdgeInsets.only(left: context.mediumValue),
+      child: SizedBox(
+        width: context.width,
+        height: context.height * .2,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: state.songs!.length,
+          itemBuilder: (context, index) {
+            final song = state.songs![index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: SizedBox(
+                width: context.width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(
+                          song.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.music_note,
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                      height: 8.0), // Görsel ile yazılar arasındaki boşluk
-                  Text(
-                    song.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis, // Uzun başlıklar için
-                  ),
-                  Text(
-                    song.artist,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 1,
-                    overflow:
-                        TextOverflow.ellipsis, // Uzun sanatçı isimleri için
-                  ),
-                ],
+                    const SizedBox(height: 8.0),
+                    Text(
+                      song.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      // ! Long song name
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      song.artist,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: 1,
+                      overflow:
+                          // ! Long artist name
+                          TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget _buildPlayList(BuildContext context, HomeState state) {
-    return Column(
-      children: [
-        PlayListWidget(
-          showSeeMore: state.showSeeMore,
-          onSeeMorePressed: () {
-            context.read<HomeViewModel>().add(SeeMoreEvent());
-          },
-          text: state.showSeeMore ? 'See Less' : 'See More',
-          onSeeLessPressed: () {
-            context.read<HomeViewModel>().add(SeeLessEvent());
-          },
-        ),
-        AnimatedContainer(
-          duration: context.durationMedium,
-          height: state.showSeeMore ? null : context.highValue * 5,
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: state.showSeeMore ? state.songs!.length : 3,
-            itemBuilder: (context, index) {
-              final song = state.songs![index];
-              return SizedBox(
-                width: context.width,
-                child: SongTile(
-                  song: song,
-                  onFavoritePressed: () {
-                    // Favorilere ekleme işlevi burada işlenebilir
-                  },
-                ),
-              );
+    return Padding(
+      padding: EdgeInsets.only(left: context.mediumValue),
+      child: Column(
+        children: [
+          PlayListWidget(
+            showSeeMore: state.showSeeMore,
+            onSeeMorePressed: () {
+              context.read<HomeViewModel>().add(SeeMoreEvent());
+            },
+            text: state.showSeeMore ? 'See Less' : 'See More',
+            onSeeLessPressed: () {
+              context.read<HomeViewModel>().add(SeeLessEvent());
             },
           ),
-        ),
-      ],
+          AnimatedContainer(
+            duration: context.durationMedium,
+            height: state.showSeeMore ? null : context.highValue * 5,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: state.showSeeMore ? state.songs!.length : 3,
+              itemBuilder: (context, index) {
+                final song = state.songs![index];
+                return SizedBox(
+                  width: context.width,
+                  child: SongTile(
+                    song: song,
+                    onFavoritePressed: () {
+                      // Favorilere ekleme işlevi burada işlenebilir
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
