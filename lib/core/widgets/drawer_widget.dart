@@ -24,14 +24,20 @@ class DrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text("Home Page"),
             onTap: () {
-              context.router.replace(HomeViewRoute());
+              // ! Set the active tab to Home
+              final tabsRouter = AutoTabsRouter.of(context);
+              tabsRouter.setActiveIndex(0); // Assuming Home is at index 0
+              Navigator.of(context).pop(); // Close the drawer
             },
           ),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text("Profile"),
             onTap: () {
-              context.router.replace(const ProfileViewRoute());
+              // ! Set the active tab to Profile
+              final tabsRouter = AutoTabsRouter.of(context);
+              tabsRouter.setActiveIndex(3); // Assuming Profile is at index 3
+              Navigator.of(context).pop(); // Close the drawer
             },
           ),
           ListTile(
@@ -40,7 +46,7 @@ class DrawerWidget extends StatelessWidget {
             onTap: () {
               context.router.replace(const SettingsViewRoute());
             },
-          )
+          ),
         ],
       ),
     );
