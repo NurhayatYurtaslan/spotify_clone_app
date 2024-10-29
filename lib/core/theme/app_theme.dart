@@ -3,8 +3,9 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 
 class AppTheme {
   static final lightTheme = ThemeData(
-    
-    dividerColor:AppColors.darkBackground,
+    drawerTheme:
+        const DrawerThemeData(backgroundColor: AppColors.lightBackground),
+    dividerColor: AppColors.darkBackground,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.lightBackground,
     brightness: Brightness.light,
@@ -49,7 +50,9 @@ class AppTheme {
   );
 
   static final darkTheme = ThemeData(
-    dividerColor:Colors.white,
+    drawerTheme:
+        const DrawerThemeData(backgroundColor: AppColors.darkBackground),
+    dividerColor: Colors.white,
     primaryColor: AppColors.darkBackground,
     scaffoldBackgroundColor: AppColors.darkBackground,
     brightness: Brightness.dark,
@@ -101,6 +104,5 @@ class AppTheme {
         color: Colors.white, // Koyu tema için renk
       ),
     ),
-
   );
 }
