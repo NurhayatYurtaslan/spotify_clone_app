@@ -11,11 +11,14 @@ import 'package:spotify_clone_app/app/views/view_home/widgets/song_search_delega
 import 'package:spotify_clone_app/app/views/view_home/widgets/song_tile_widget.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 import 'package:spotify_clone_app/core/widgets/app_bar.dart';
+import 'package:spotify_clone_app/core/widgets/drawer_widget.dart';
 import 'package:spotify_clone_app/gen/assets.gen.dart';
 
 @RoutePage()
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  HomeView({super.key});
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,9 @@ class HomeView extends StatelessWidget {
       child: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
           return Scaffold(
+            key: _scaffoldKey,
             appBar: _buildAppBar(context, state),
+            endDrawer: const DrawerWidget(),
             body: _buildBody(context, state),
           );
         },
@@ -36,22 +41,32 @@ class HomeView extends StatelessWidget {
     return BasicAppbar(
       hideBack: true,
       onPressed: () {},
-      title: SvgPicture.asset(
-        Assets.images.svg.spotifyLogo,
-        height: context.mediumValue,
-        width: context.highValue,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Search Icon on the left
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SongSearchDelegate(state.songs ?? []),
+              );
+            },
+          ),
+          // Logo in the center
+          Expanded(
+            child: Center(
+              child: SvgPicture.asset(
+                Assets.images.svg.spotifyLogo,
+                height: context.mediumValue,
+                width: context.highValue,
+              ),
+            ),
+          ),
+          // Drawer Icon on the right
+        ],
       ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () {
-            showSearch(
-              context: context,
-              delegate: SongSearchDelegate(state.songs ?? []),
-            );
-          },
-        ),
-      ],
     );
   }
 
@@ -59,7 +74,7 @@ class HomeView extends StatelessWidget {
     if (state.songs == null) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is HomeErrorState) {
-      return Center(child: Text(state.message)); // Show error message
+      return Center(child: Text(state.message)); // Hata mesajı göster
     }
 
     return SingleChildScrollView(
@@ -99,9 +114,9 @@ class HomeView extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            color: Colors.grey,
-                            child: const Icon(Icons.music_note,
-                                color: Colors.white),
+                            child: const Icon(
+                              Icons.music_note,
+                            ),
                           );
                         },
                       ),
@@ -161,7 +176,7 @@ class HomeView extends StatelessWidget {
                 child: SongTile(
                   song: song,
                   onFavoritePressed: () {
-                    // Handle favorite button press
+                    // Favorilere ekleme işlevi burada işlenebilir
                   },
                 ),
               );
