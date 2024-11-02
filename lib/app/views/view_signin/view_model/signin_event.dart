@@ -9,16 +9,16 @@ class BackEvent extends SigninEvent {
 }
 
 class SigninInitialEvent extends SigninEvent {
-  final BuildContext context; // BuildContext parametresi
-  final String email; // E-mail için gerekli parametre
-  final String password; // Şifre için gerekli parametre
+  final BuildContext context; 
+  final String email; 
+  final String password; 
 
   SigninInitialEvent(this.context,
       {required this.email, required this.password});
 }
 
 class SigninWithGoogleEvent extends SigninEvent {
-  final BuildContext context; // Context için gerekli parametre
+  final BuildContext context; 
   SigninWithGoogleEvent({required this.context});
 }
 

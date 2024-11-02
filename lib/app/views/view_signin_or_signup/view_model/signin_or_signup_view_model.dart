@@ -6,7 +6,7 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 import 'signin_or_signup_event.dart';
 import 'signin_or_signup_state.dart';
-import 'package:spotify_clone_app/app/router/app_router.dart'; // AutoRoute generated router
+import 'package:spotify_clone_app/app/router/app_router.dart'; 
 
 class SigninOrSignupViewModel
     extends Bloc<SigninOrSignupEvent, SigninOrSignupState> {

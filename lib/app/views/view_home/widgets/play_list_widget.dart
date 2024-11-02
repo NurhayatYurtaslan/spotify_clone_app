@@ -28,13 +28,13 @@ class PlayListWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Playlist', // Daha açıklayıcı bir başlık düşünülebilir
+                'Playlist',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               GestureDetector(
-                onTap: showSeeMore ? onSeeLessPressed : onSeeMorePressed, // Duruma göre tıklama olayları
+                onTap: showSeeMore ? onSeeLessPressed : onSeeMorePressed, 
                 child: Text(
-                  showSeeMore ? "See Less" : text, // Duruma göre metin değişikliği
+                  showSeeMore ? "See Less" : text, 
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12,

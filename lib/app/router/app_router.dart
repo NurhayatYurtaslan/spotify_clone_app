@@ -22,7 +22,7 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          
+          initial: true,
           page: SplashViewRoute.page,
         ),
         AutoRoute(page: IntroViewRoute.page),
@@ -31,7 +31,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: SigninViewRoute.page),
         AutoRoute(page: SignupViewRoute.page),
         AutoRoute(page: SettingsViewRoute.page),
-        AutoRoute(page: NavBarViewRoute.page, initial: true,
+        AutoRoute(page: NavBarViewRoute.page, 
         children: [
           AutoRoute(
             page: HomeViewRoute.page,

@@ -5,14 +5,14 @@ import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 class BasicAppButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String title;
-  final double? fontSize; // Nullable yapıyoruz
+  final double? fontSize; 
   final double? height;
 
   const BasicAppButton({
     required this.onPressed,
     required this.title,
     this.height,
-    this.fontSize, // Null olmasına izin veriyoruz
+    this.fontSize, 
     super.key,
   });
 
@@ -29,7 +29,7 @@ class BasicAppButton extends StatelessWidget {
           color: AppColors.lightBackground,
           fontSize: fontSize ??
               context.mediumValue *
-                  .7, // Eğer fontSize null ise 15 değeri kullanılır
+                  .7, 
         ),
       ),
     );

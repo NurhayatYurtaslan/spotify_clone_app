@@ -9,6 +9,7 @@ import 'package:spotify_clone_app/app/views/view_home/widgets/home_top_card_widg
 import 'package:spotify_clone_app/app/views/view_home/widgets/play_list_widget.dart';
 import 'package:spotify_clone_app/app/views/view_home/widgets/song_search_delegate_widget.dart';
 import 'package:spotify_clone_app/app/views/view_home/widgets/song_tile_widget.dart';
+import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 import 'package:spotify_clone_app/core/widgets/app_bar.dart';
 import 'package:spotify_clone_app/core/widgets/drawer_widget.dart';
@@ -44,7 +45,6 @@ class HomeView extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Search Icon on the left
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
@@ -54,7 +54,7 @@ class HomeView extends StatelessWidget {
               );
             },
           ),
-          // Logo in the center
+         
           Expanded(
             child: Center(
               child: SvgPicture.asset(
@@ -64,7 +64,6 @@ class HomeView extends StatelessWidget {
               ),
             ),
           ),
-          // Drawer Icon on the right
         ],
       ),
     );
@@ -74,7 +73,7 @@ class HomeView extends StatelessWidget {
     if (state.songs == null) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is HomeErrorState) {
-      return Center(child: Text(state.message)); // Hata mesajı göster
+      return Center(child: Text(state.message));
     }
 
     return SingleChildScrollView(
@@ -90,98 +89,124 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _buildSongList(BuildContext context, HomeState state) {
-    return SizedBox(
-      width: context.width,
-      height: context.height * .2, // Yüksekliği biraz artırdım
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: state.songs!.length,
-        itemBuilder: (context, index) {
-          final song = state.songs![index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: SizedBox(
-              width: context.width * 0.4, // Genişliği ayarladım
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(8.0), // Köşeleri yuvarladım
-                      child: Image.network(
-                        song.imageUrl, // Şarkının görsel URL'sini kullanıyoruz
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.music_note,
-                          );
-                        },
+    return Padding(
+      padding: EdgeInsets.only(left: context.mediumValue),
+      child: SizedBox(
+        width: context.width,
+        height: context.height * .30,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: state.songs!.length,
+          itemBuilder: (context, index) {
+            final song = state.songs![index];
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: context.lowValue),
+              child: SizedBox(
+                width: context.width * 0.4,
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(context.mediumValue * .7),
+                            child: Image.network(
+                              song.imageUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.music_note);
+                              },
+                            ),
+                          ),
+                        ),
+                        context.sizedHeightBoxLow,
+                        Text(
+                          song.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          song.artist,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    
+                    Positioned(
+                      bottom: context.height * 0.038,
+                      left: context.width * 0.24,
+                      child: IconButton(
+                        icon: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(context.mediumValue),
+                              color: AppColors.darkBackground),
+                          child: Padding(
+                            padding: EdgeInsets.all(context.lowValue),
+                            child: Icon(Icons.play_arrow,
+                                size: context.width * 0.1,
+                                color: AppColors.lightBackground),
+                          ),
+                        ),
+                        onPressed: () {},
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                      height: 8.0), // Görsel ile yazılar arasındaki boşluk
-                  Text(
-                    song.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis, // Uzun başlıklar için
-                  ),
-                  Text(
-                    song.artist,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 1,
-                    overflow:
-                        TextOverflow.ellipsis, // Uzun sanatçı isimleri için
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget _buildPlayList(BuildContext context, HomeState state) {
-    return Column(
-      children: [
-        PlayListWidget(
-          showSeeMore: state.showSeeMore,
-          onSeeMorePressed: () {
-            context.read<HomeViewModel>().add(SeeMoreEvent());
-          },
-          text: state.showSeeMore ? 'See Less' : 'See More',
-          onSeeLessPressed: () {
-            context.read<HomeViewModel>().add(SeeLessEvent());
-          },
-        ),
-        AnimatedContainer(
-          duration: context.durationMedium,
-          height: state.showSeeMore ? null : context.highValue * 5,
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: state.showSeeMore ? state.songs!.length : 3,
-            itemBuilder: (context, index) {
-              final song = state.songs![index];
-              return SizedBox(
-                width: context.width,
-                child: SongTile(
-                  song: song,
-                  onFavoritePressed: () {
-                    // Favorilere ekleme işlevi burada işlenebilir
-                  },
-                ),
-              );
+    return Padding(
+      padding: EdgeInsets.only(left: context.mediumValue),
+      child: Column(
+        children: [
+          PlayListWidget(
+            showSeeMore: state.showSeeMore,
+            onSeeMorePressed: () {
+              context.read<HomeViewModel>().add(SeeMoreEvent());
+            },
+            text: state.showSeeMore ? 'See Less' : 'See More',
+            onSeeLessPressed: () {
+              context.read<HomeViewModel>().add(SeeLessEvent());
             },
           ),
-        ),
-      ],
+          AnimatedContainer(
+            duration: context.durationMedium,
+            height: state.showSeeMore ? null : context.highValue * 5,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: state.showSeeMore ? state.songs!.length : 3,
+              itemBuilder: (context, index) {
+                final song = state.songs![index];
+                return SizedBox(
+                  width: context.width,
+                  child: SongTile(
+                    song: song,
+                    onFavoritePressed: () {
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

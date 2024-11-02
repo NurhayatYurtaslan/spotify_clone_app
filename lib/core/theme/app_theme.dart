@@ -51,10 +51,10 @@ class AppTheme {
         ),
       ),
     ),
-    // Özel metin için stil ekle
+
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        color: AppColors.darkGrey, // Açık tema için renk
+        color: AppColors.darkGrey, 
       ),
     ),
   );
@@ -113,10 +113,10 @@ class AppTheme {
         ),
       ),
     ),
-    // Özel metin için stil ekle
+    
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        color: Colors.white, // Koyu tema için renk
+        color: Colors.white, 
       ),
     ),
   );
