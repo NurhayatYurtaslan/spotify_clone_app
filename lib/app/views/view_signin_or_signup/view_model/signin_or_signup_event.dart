@@ -1,10 +1,10 @@
-// Event'ler
+
 import 'package:flutter/material.dart';
 
 abstract class SigninOrSignupEvent {}
 
 class NavigateToSigninEvent extends SigninOrSignupEvent {
-  final BuildContext context; // Navigation için context alıyoruz
+  final BuildContext context; 
   NavigateToSigninEvent(this.context);
 }
 

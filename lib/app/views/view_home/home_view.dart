@@ -54,7 +54,7 @@ class HomeView extends StatelessWidget {
               );
             },
           ),
-          // Logo in the center
+         
           Expanded(
             child: Center(
               child: SvgPicture.asset(
@@ -140,7 +140,7 @@ class HomeView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Play butonu
+                    
                     Positioned(
                       bottom: context.height * 0.038,
                       left: context.width * 0.24,
@@ -199,7 +199,6 @@ class HomeView extends StatelessWidget {
                   child: SongTile(
                     song: song,
                     onFavoritePressed: () {
-                      // Favorilere ekleme işlevi burada işlenebilir
                     },
                   ),
                 );

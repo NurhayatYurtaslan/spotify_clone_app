@@ -12,7 +12,7 @@ class SigninSuccessState extends SigninState {
 }
 
 class SigninFailureState extends SigninState {
-  final String message; // Eklenen message
+  final String message; 
   SigninFailureState(this.message);
 }
 

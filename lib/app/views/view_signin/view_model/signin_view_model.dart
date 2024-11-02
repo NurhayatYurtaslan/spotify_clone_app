@@ -10,7 +10,7 @@ import 'package:spotify_clone_app/core/constants/color_constants.dart';
 import 'package:spotify_clone_app/core/extensions/context_extension.dart';
 import 'package:spotify_clone_app/core/repository/model/auth/signin/signin_request_model.dart';
 import 'package:spotify_clone_app/core/repository/service/auth_service.dart';
-import 'package:modern_snackbar/modern_snackbar.dart'; // ModernSnackbar'ı import edin
+import 'package:modern_snackbar/modern_snackbar.dart'; 
 
 class SigninViewModel extends Bloc<SigninEvent, SigninState> {
   final AuthService authService = AuthService();
