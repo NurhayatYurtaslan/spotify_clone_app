@@ -1,20 +1,45 @@
+import 'package:hive/hive.dart';
+
+part 'songs_model.g.dart'; // This is the generated part file.
+
+@HiveType(typeId: 0) // Ensure the typeId is unique
 class Song {
+  @HiveField(0)
+  final String id; // Unique identifier for the song
+
+  @HiveField(1)
   final String title;
+
+  @HiveField(2)
   final String artist;
-  final String imageUrl; // Düzeltilmiş alan ismi
+
+  @HiveField(3)
+  final String imageUrl;
 
   Song({
+    required this.id,
     required this.title,
     required this.artist,
-    required this.imageUrl, // Gerekli hale getirildi
+    required this.imageUrl,
   });
 
-  // JSON Map'ten Song oluşturmak için fabrika yapıcı
+  // Factory constructor for creating a Song instance from JSON
   factory Song.fromJson(Map<String, dynamic> json) {
     return Song(
-      title: json['title'] as String? ?? '', // Null-aware operator kullanımı ve fallback
-      artist: json['artist'] as String? ?? '', // Null-aware operator kullanımı ve fallback
-      imageUrl: (json['Image'] ?? '') as String, // 'null' durumunu kontrol ediyoruz ve fallback veriyoruz
+      id: json['id'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      artist: json['artist'] as String? ?? '',
+      imageUrl: json['imageUrl'] as String? ?? '',
     );
+  }
+
+  // Convert Song instance to JSON (if needed)
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'artist': artist,
+      'imageUrl': imageUrl,
+    };
   }
 }

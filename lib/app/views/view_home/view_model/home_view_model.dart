@@ -14,25 +14,32 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> _initial(HomeInitialEvent event, Emitter<HomeState> emit) async {
-    emit(HomeLoadingState());
-    try {
-      QuerySnapshot snapshot = await firestore.collection('Songs').get();
+Future<void> _initial(HomeInitialEvent event, Emitter<HomeState> emit) async {
+  emit(HomeLoadingState());
+  try {
+    QuerySnapshot snapshot = await firestore.collection('Songs').get();
 
-      if (snapshot.docs.isNotEmpty) {
-        List<Song> songs = snapshot.docs
-            .map((doc) => Song.fromJson(doc.data() as Map<String, dynamic>))
-            .toList();
-        songs.shuffle();
+    if (snapshot.docs.isNotEmpty) {
+      List<Song> songs = snapshot.docs
+          .map((doc) => Song.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+          
 
-        emit(HomeLoadedState(songs: songs, filteredSongs: songs, showSeeMore: false));
-      } else {
-        emit(HomeLoadedState(songs: [], filteredSongs: [], showSeeMore: false));
+      // Debug output to check fetched songs and their image URLs
+      for (var song in songs) {
+        print("Fetched Song: ${song.id}, Title: ${song.title}, Image URL: ${song.imageUrl}");
       }
-    } catch (e) {
-      emit(HomeErrorState(message: "Unable to fetch songs. Please try again later."));
+
+      songs.shuffle();
+      emit(HomeLoadedState(songs: songs, filteredSongs: songs, showSeeMore: false));
+    } else {
+      emit(HomeLoadedState(songs: [], filteredSongs: [], showSeeMore: false));
     }
+  } catch (e) {
+    emit(HomeErrorState(message: "Unable to fetch songs. Please try again later."));
   }
+}
+
 
   void _seeMore(SeeMoreEvent event, Emitter<HomeState> emit) {
     if (!state.showSeeMore) {

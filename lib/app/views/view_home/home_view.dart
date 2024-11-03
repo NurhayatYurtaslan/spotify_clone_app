@@ -54,7 +54,6 @@ class HomeView extends StatelessWidget {
               );
             },
           ),
-         
           Expanded(
             child: Center(
               child: SvgPicture.asset(
@@ -140,7 +139,6 @@ class HomeView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    
                     Positioned(
                       bottom: context.height * 0.038,
                       left: context.width * 0.24,
@@ -195,13 +193,10 @@ class HomeView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final song = state.songs![index];
                 return SizedBox(
-                  width: context.width,
-                  child: SongTile(
-                    song: song,
-                    onFavoritePressed: () {
-                    },
-                  ),
-                );
+                    width: context.width,
+                    child: SongTile(
+                      songs: [song], // Tek bir şarkı nesnesi geçiyoruz     
+                    ));
               },
             ),
           ),

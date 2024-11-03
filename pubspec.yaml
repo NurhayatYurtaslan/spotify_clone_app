@@ -48,6 +48,8 @@ dependencies:
   modern_snackbar: ^0.0.1
   #hive
   hive_flutter: ^1.1.0
+  hive: ^2.2.3
+  
   
 
 
